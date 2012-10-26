@@ -5,3 +5,6 @@ body {
     max-width: 540px;
     line-height: 1.7em;
 }
+.blog-list li {
+    line-height: 1.7em;
+}
