@@ -1,6 +1,6 @@
 ---
-title: Java 字节码中的 if 分支
 layout: post
+title: Java 字节码中的 if 分支
 ---
 
 Java 字节码里面的 if 族指令包含很多条指令，但都是一个套路：
@@ -10,11 +10,11 @@ Java 字节码里面的 if 族指令包含很多条指令，但都是一个套�
 比如 ifeq 指令的作用是：弹出栈顶元素，并将之和0比较，如果相等，就跳到指定的位置。再比如 ifne ，作用是如果不等于 0 ，则跳转。（记住这两个指令，下面将会用到）
 
 先来看一个最简单的情形：
-<pre lang="Java">
+{% highlight java %}
 if (will) {
     doSome();
 }
-</pre>
+{% endhighlight %}
 
 Java 的字节码的伪代码如下：
 
@@ -31,14 +31,14 @@ Java 的字节码的伪代码如下：
 
 源码：
 
-<pre lang="Java">
+{% highlight java %}
 public static void Main(String [] args) {
     boolean will = true;
     if (will) {
         System.out.println(1);
     } 
 }
-</pre>
+{% endhighlight %}
 
 字节码：
 
@@ -57,13 +57,13 @@ public static void Main(String [] args) {
 
 接下来看看带有 else 分支的 if 语句。
 
-<pre lang="Java">
+{% highlight java %}
 if (will) {
     do_a();
 } else {
     do_b();
 }
-</pre>
+{% endhighlight %}
 
 那么伪代码应该是这样的：
 
@@ -82,11 +82,11 @@ if (will) {
 
 如果有这种形式，该如何呢？
 
-<pre lang="Java">
+{% highlight java %}
 if (a && b) {
     doSomething();
 }
-</pre>
+{% endhighlight %}
 
 第一反应，是先计算 a && b 的值，这样，我们就把问题转化成我们已经解决的问题了。但在寸土寸金的字节码里面，还有更节省空间的做法。你能想出来吗？
 
@@ -107,11 +107,11 @@ if (a && b) {
 
 那么这种形式呢？
 
-<pre lang="Java">
+{% highlight java %}
 if (a || b) {
     doSomething();
 }
-</pre>
+{% endhighlight %}
 
 我们可以依据上面的思路给出答案：
 
@@ -142,11 +142,11 @@ if (a || b) {
 
 上面的伪代码等价于
 
-<pre lang="Java">
+{% highlight java %}
 if (a) {
     if (!b) goto ifend;
-	doSomething();
+    doSomething();
 }
 ifend:
 return;
-</pre>
+{% endhighlight %}
