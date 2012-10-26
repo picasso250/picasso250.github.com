@@ -3,8 +3,6 @@ title: 忘记了 SAE 上的 WordPress 密码怎么办？
 layout: post
 ---
 
-# 忘记了 SAE 上的 WordPress 密码怎么办？
-
 如果你忘记了 WordPress 密码，有很多种方式可以找回密码。可是如果你是忘记了托管在 SAE 上的WordPress 密码，可就比较麻烦了。
 
 网上有很多文章教你如何找回密码。其方法不外乎使用 WordPress 本身的找回密码功能，或者直接更改数据库的密码。比如[Reset a WordPress Password from phpMyAdmin](http://www.devlounge.net/publishing/reset-a-wordpress-password-from-phpmyadmin)。但很可惜的是，这些方法在SAE上都不管用。
