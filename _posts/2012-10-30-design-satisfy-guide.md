@@ -1,5 +1,5 @@
 ---
-title: 别吵，我在思考
+title: 设计中的满足和提升
 layout: post
 ---
 
