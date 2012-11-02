@@ -8,3 +8,7 @@ body {
 .blog-list li {
     line-height: 1.7em;
 }
+.time {
+    display: inline-block;
+    float: right;
+}
