@@ -1,6 +1,12 @@
 body {
     padding: 5px;
 }
+code {
+    padding: 0 5px;
+    border: 1px solid #EADFDF;
+    background-color: #F8F6F6;
+    border-radius: 3px;
+}
 .content {
     max-width: 540px;
     line-height: 1.7em;
