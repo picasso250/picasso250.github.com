@@ -7,6 +7,9 @@ code {
     background-color: #F8F6F6;
     border-radius: 3px;
 }
+code[class] {
+    display: inline-block;
+}
 .content {
     max-width: 570px;
     line-height: 1.7em;
