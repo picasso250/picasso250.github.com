@@ -23,9 +23,7 @@ layout: post
 
 假设我们需要匹配 html 代码。于是有人写出了这个正则：
 
-```regex
-<html>\s*<head>([\s\S]*)</head>\s*<body>([\s\S]*)</body>\s*</html>
-```
+    <html>\s*<head>([\s\S]*)</head>\s*<body>([\s\S]*)</body>\s*</html>
 
 这个正则是可以工作的。但它做了很多回溯。
 
@@ -33,7 +31,5 @@ layout: post
 
 对这个正则可以做改进，比如改成懒惰模式。
 
-```regex
-<html>\s*<head>([\s\S]*?)</head>\s*<body>([\s\S]*?)</body>\s*</html>
-```
+    <html>\s*<head>([\s\S]*?)</head>\s*<body>([\s\S]*?)</body>\s*</html>
 
