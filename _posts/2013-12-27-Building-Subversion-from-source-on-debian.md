@@ -1,5 +1,5 @@
 ---
-title: Building Subversion from source on Debian 7 wheezy
+title: Building Subversion 1.7 from source on Debian 7 wheezy
 layout: post
 ---
 
