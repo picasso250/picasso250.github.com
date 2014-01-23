@@ -3,7 +3,9 @@ title: Building Subversion 1.7 from source on Debian 7 wheezy
 layout: post
 ---
 
-首先安装依赖
+首先下载1.7的源码
+
+于此同时，可以安装依赖
 
     apt-get build-dep subversion libsvn1 libsvn-dev libapache2-svn libdb5.1*
 
