@@ -166,3 +166,79 @@ limit 20
 <td>0.8%</td>
 </tr>
 </table>
+
+{% highlight sql %}
+SELECT 
+left(uid, 1) as `uid的第一位`, 
+count(*) as `数量`, 
+concat(truncate(count(*)/24591*100 ,1),'%') as `百分比`
+FROM renren_data.student
+group by left(uid, 1)
+order by count(*) desc
+limit 10
+{% endhighlight %}
+
+
+<table class="table">
+<tr>
+<th>uid的第一位</th>
+<th>数量</th>
+<th>百分比</th>
+</tr>
+
+<tr>
+<td>2</td>
+<td>16203</td>
+<td>65.8%</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>2948</td>
+<td>11.9%</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>2452</td>
+<td>9.9%</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>1270</td>
+<td>5.1%</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>781</td>
+<td>3.1%</td>
+</tr>
+
+<tr>
+<td>7</td>
+<td>733</td>
+<td>2.9%</td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>674</td>
+<td>2.7%</td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>512</td>
+<td>2.0%</td>
+</tr>
+
+<tr>
+<td>9</td>
+<td>450</td>
+<td>1.8%</td>
+</tr>
+</table>
+
+看来不符合那个什么定理啊。
