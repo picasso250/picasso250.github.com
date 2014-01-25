@@ -7,7 +7,7 @@ layout: post
 
 于此同时，可以安装依赖
 
-    apt-get build-dep subversion libsvn1 libsvn-dev libapache2-svn libdb5.1*
+    apt-get build-dep subversion libsvn1 libsvn-dev libapache2-svn
 
 然后就是安装编译老三句了：
 

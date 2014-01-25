@@ -171,7 +171,7 @@ limit 20
 SELECT 
 left(uid, 1) as `uid的第一位`, 
 count(*) as `数量`, 
-concat(truncate(count(*)/24591*100 ,1),'%') as `百分比`
+concat(truncate(count(*)/(select count(*) from renren_data.student)*100 ,1),'%') as `百分比`
 FROM renren_data.student
 group by left(uid, 1)
 order by count(*) desc
@@ -180,11 +180,13 @@ limit 10
 
 
 <table class="table">
+    <thead>
 <tr>
 <th>uid的第一位</th>
 <th>数量</th>
 <th>百分比</th>
 </tr>
+    </thead>
 
 <tr>
 <td>2</td>
