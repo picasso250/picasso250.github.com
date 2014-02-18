@@ -18,3 +18,4 @@ zh的语言包，搜一下，就安装上了，现在你可以直接选择使用
 error_log() 无作用，改成sae storage的。（不改也可以的其实）
 
 为了避免重复劳动，放在github上。
+[https://github.com/picasso250/q2a-SAE](https://github.com/picasso250/q2a-SAE)
