@@ -1,5 +1,5 @@
 ---
-title: question2answer 1.6 在SAE上安装
+title: Question2Answer 1.6 安装在SAE上
 layout: post
 ---
 
