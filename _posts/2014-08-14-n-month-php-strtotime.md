@@ -9,6 +9,7 @@ layout: post
 为什么不是一个Bug呢，你们可以感受一下：
 
 ```php
+<?php
 $now = strtotime('2014-05-31 23:59:59');
 echo date('Y-m-d', $now), "\n";
 foreach (range(-12, 12) as $n) {
