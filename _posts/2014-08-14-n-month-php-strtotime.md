@@ -24,6 +24,7 @@ foreach (range(-12, 12) as $n) {
 解决方案
 
 ```php
+<?php
 function n_month($n, $now = null)
 {
     if ($now === null) {
