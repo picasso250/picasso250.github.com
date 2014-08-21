@@ -37,3 +37,27 @@ function n_month($n, $now = null)
     return strtotime("$n month", strtotime(date('Y-m-01 00:00:01', $now)));
 }
 ```
+
+或者更特殊的讲，我们只是想让年月份按照我们希望改变，于是，我们可以写出另一个函数：
+
+```php
+<?php
+
+// test
+list($year, $month) = n_month(-1, '2014', '05');
+
+function n_month($n, $year = null, $month = null)
+{
+    if ($year === null) {
+        list($year, $month) = explode(',', date('Y,m'));
+    }
+    $year = intval($year) + intval(floor(($month-1) / 12));
+    $month = intval($month) + $n;
+    if ($month > 0) {
+        $month = ($month - 1) % 12 + 1;
+    } else {
+        $month = 12 - ((12 - $month) % 12)
+    }
+    return array(strval($year), strval($month));
+}
+```
