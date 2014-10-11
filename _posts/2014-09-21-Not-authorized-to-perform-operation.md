@@ -6,7 +6,11 @@ layout: post
 (Not authorized to perform operation)[http://intijk.com/notes/linux-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/not-authorized-to-perform-operation.html].
 
 当你在图形界面里点击硬盘的盘符，希望挂载一个分区的时候，可能会遇到
-`Not authorized to perform operation` 的问题，权限不够，无法mount该分区。解决方法是下面几步
+`Not authorized to perform operation` 的问题，权限不够，无法mount该分区。
+
+我在将 `Debian` 升级成 `testing` 分支的时候，就遇到了这个问题，不论是 Gnome 还说 XFCE 都有此问题。
+
+解决方法是下面几步
 
 检查 `/etc/group` 查看自己是否在storage用户组里。
 创建文件
