@@ -5,4 +5,4 @@ layout: post
 
 GitHub for Windows
 
-`C:\Users\wangxiaochi\AppData\Local\GitHub\PortableGit_<sha1>`
+`C:\Users\your_name\AppData\Local\GitHub\PortableGit_<sha1>`
