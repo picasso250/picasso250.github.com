@@ -22,13 +22,13 @@ WebMaker 作出了一个不依赖密码的登录过程，这里是介绍：
 
 ## 加入——从未有过的便捷
 
-![立刻开始使用Webmaker，账户确认是之后的事情。](http://notebook.ideapublic.org/wp-content/uploads/sites/5/2014/09/join1.png)
-
 我们大大简化了Webmaker的注册流程。
 以前，用户需要先注册，才能使用Webmaker，很麻烦。
 现在，新用户只需要输入邮箱和用户名就好了。
 他们可以立刻开始使用Webmaker。
 在用户第一次登录的时候，需要确认邮箱。（以后会加入短信的支持。）
+
+![立刻开始使用Webmaker，账户确认是之后的事情。](http://notebook.ideapublic.org/wp-content/uploads/sites/5/2014/09/join1.png)
 
 ## 登录——无需密码
 
