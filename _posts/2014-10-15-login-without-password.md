@@ -1,5 +1,5 @@
 ---
-title: [译]无密码登录
+title: 【译】无密码登录
 layout: post
 ---
 
@@ -8,7 +8,6 @@ WebMaker 作出了一个不依赖密码的登录过程，这里是介绍：
 [One Less Password](http://notebook.ideapublic.org/2014/one-less-password/)
 
 简译如下：
-
 
 ## 少一次密码
 
