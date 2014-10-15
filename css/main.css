@@ -160,6 +160,10 @@ a:visited { color: #a0a; }
 }
 
 .post img {
+  display: block;
   margin: auto;
   max-width: 100%;
+}
+.post img:after {
+  content: attr(alt);
 }
