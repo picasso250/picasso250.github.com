@@ -47,12 +47,12 @@ layout: post
 
 这套方案的优势是简单。可是如果万一出了问题，也是有相应的手段的。
 
-1. 合并所产生的bug
+### 合并所产生的bug
   
-  假设 featureA 和 featureB 都已经开发完毕，即将发布。在合并到 `master` 上时，发生了冲突。此时我们直接在`master` 上解决冲突。
-  
-  再假设事情不凑巧。解决冲突的时候，产生了bug，需要修复。因为问题不是featureA或者featureB单独产生的，或者界定问题产生的feature比较困难，不能回 featureA 或者 featureB 上修复。此时，我们需要做的就是在master上分裂出一个release分支。解决此次的问题。待问题解决，合并回master即可。
- 
-2. 发布受阻。
+假设 featureA 和 featureB 都已经开发完毕，即将发布。在合并到 `master` 上时，发生了冲突。此时我们直接在`master` 上解决冲突。
 
-   假设 featureA 和 featureB 都已经开发完毕。合并至master后，打上tag `v1.2.2`，交给QA测试。但在测试的过程中，发现有 featureA 重大缺陷，不能发布，准备只发布 featureB，此时，可以将 `master` 分支 reset 回上一次发布的tag `v1.2.1`，然后将featureB单独合并至 `master` 发布。
+再假设事情不凑巧。解决冲突的时候，产生了bug，需要修复。因为问题不是featureA或者featureB单独产生的，或者界定问题产生的feature比较困难，不能回 featureA 或者 featureB 上修复。此时，我们需要做的就是在master上分裂出一个release分支。解决此次的问题。待问题解决，合并回master即可。
+ 
+### 发布受阻。
+
+假设 featureA 和 featureB 都已经开发完毕。合并至master后，打上tag `v1.2.2`，交给QA测试。但在测试的过程中，发现有 featureA 重大缺陷，不能发布，准备只发布 featureB，此时，可以将 `master` 分支 reset 回上一次发布的tag `v1.2.1`，然后将featureB单独合并至 `master` 发布。
