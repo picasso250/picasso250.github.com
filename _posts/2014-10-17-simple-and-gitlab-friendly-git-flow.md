@@ -11,6 +11,8 @@ layout: post
 
 我思考很久，得出了一个简单的，适合小团队的，gitlab 友好的 Git Flow。
 
+![simple git flow](http://ww3.sinaimg.cn/bmiddle/632bf9c4gw1ele6se30drj208q0gxq3c.jpg)
+
 ## 开发
 
 开发有三种：修复bug，新的功能（满足需求），重构。
@@ -24,7 +26,7 @@ layout: post
 ## 代码审查
 
 当开发自测完毕之后，提出merge request。gitlab有个功能，当你push一个分支上去的时候，它会在project的首页有个按钮，
-`new merge request`
+![create merge request](http://ww1.sinaimg.cn/bmiddle/632bf9c4gw1ele6shgyngj204g012jr7.jpg)
 。点击这个按钮，就会跳到创建merge request 的页面。这个merge request是从刚push上去的分支到master的。
 
 于是，你的同事可以进行代码审查。
