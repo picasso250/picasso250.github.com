@@ -1,5 +1,5 @@
 ---
-title: 小团队的GitFlow
+title: 小团队的 Git Flow
 layout: post
 ---
 
