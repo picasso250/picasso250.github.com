@@ -1,4 +1,4 @@
-﻿---
+---
 title: 任意选取两个整数，互质的概率是多少？
 layout: post
 ---
@@ -7,12 +7,12 @@ layout: post
 
 解答：
 
-`gcd(a, b)=d` ，当且仅当 `d|a`, `d|b`, `gcd(a/d, b/d)=1`
+$gcd(a, b)=d$ ，当且仅当 $d|a$ , $d|b$ , $gcd(\frac{a}{d}, \frac{b}{d})=1$
 
-设 `gcd(a, b)=1` 概率为`p`，则`gcd(a,b)=d`的概率是`p/(d^2)`
+设 $gcd(a, b)=1$ 概率为 $p$，则 $gcd(a,b)=d$ 的概率是 $\frac{p}{d^2}$
 
-\[\[
-\lim{n=0,\inf}{p/n^2} = 1
-\]\]
+$$
+\sum_{n=1}^{\infty}\frac{p}{n^2} = 1
+$$
 
 于是可以求得p
