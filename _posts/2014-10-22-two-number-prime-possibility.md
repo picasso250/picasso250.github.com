@@ -7,10 +7,12 @@ layout: post
 
 解答：
 
-gcd(a, b)=d ，当且仅当 d|a, d|b, gcd(a/d, b/d)=1
+`gcd(a, b)=d` ，当且仅当 `d|a`, `d|b`, `gcd(a/d, b/d)=1`
 
-设 gcd(a, b)=1 概率为p，则gcd(a,b)=d的概率是p/(d^2)
+设 `gcd(a, b)=1` 概率为`p`，则`gcd(a,b)=d`的概率是`p/(d^2)`
 
+\[\[
 \lim{n=0,\inf}{p/n^2} = 1
+\]\]
 
 于是可以求得p
