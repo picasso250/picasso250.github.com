@@ -10,14 +10,17 @@ layout: post
 和的符号 $\sum_{}$
 
 $$
-\sum_{1}^{n}{a_n} = a_1+a_2+a3+...+a_{n-1}+a_n
+\sum_{1}^{n}{a_n} = 
+a_1+a_2+a3+...+
+a_{n-1}+a_n
 $$
 
 代表数列 $a_n$ 的和。
 
 ---
 
-定理：如果 $\lim_{n\rightarrow\infty}{a_n}\ne0$, 则级数发散。
+定理：如果 $\lim_{n\rightarrow\infty}
+{a_n}\ne0$, 则级数发散。
 
 这个很好理解，如果极限 **存在**，且不为0，肯定发散。
 
