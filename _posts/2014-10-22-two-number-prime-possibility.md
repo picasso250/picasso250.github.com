@@ -28,6 +28,6 @@ $$
 注意到 $p$ 是一个常数。
 
 $$
-\sum_{n=1}^{\infty}\frac{p}{n^2} 
+\sum_{n=1}^{\infty}\frac{p}{n^2}
 = p\sum_{n=1}^{\infty}\frac{1}{n^2}
 $$
