@@ -10,7 +10,7 @@ layout: post
 和的符号 $\sum_{}$
 
 $$
-\sum_{1}^{n}{a_n} = 
+\sum_{i=1}^{n}{a_i} = 
 a_1+a_2+a3+...+
 a_{n-1}+a_n
 $$
