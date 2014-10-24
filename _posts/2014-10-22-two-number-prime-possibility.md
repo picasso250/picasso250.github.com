@@ -7,7 +7,9 @@ layout: post
 
 解答：
 
-$gcd(a, b)=d$ ，当且仅当 $d|a$ , $d|b$ , $gcd(\frac{a}{d}, \frac{b}{d})=1$
+$gcd(a, b)=d$ ，当且仅当 $d|a ,
+d|b ,
+gcd(\frac{a}{d}, \frac{b}{d})=1$
 
 设 $gcd(a, b)=1$ 概率为 $p$，则 $gcd(a,b)=d$ 的概率是 $\frac{p}{d^2}$
 
