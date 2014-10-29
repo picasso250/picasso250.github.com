@@ -27,7 +27,7 @@ foreach (range(-12, 12) as $n) {
 
 解决方案
 
-```php
+{% highlight php %}
 <?php
 function n_month($n, $now = null)
 {
@@ -36,11 +36,11 @@ function n_month($n, $now = null)
     }
     return strtotime("$n month", strtotime(date('Y-m-01 00:00:01', $now)));
 }
-```
+{% endhighlight %}
 
 或者更特殊的，我们只是想让年月按照我们希望改变（其他的不管），于是，我们可以写出另一个函数：
 
-```php
+{% highlight php %}
 <?php
 
 // test
@@ -60,4 +60,4 @@ function n_month($n, $year = null, $month = null)
     }
     return array(strval($year), strval($month));
 }
-```
+{% endhighlight %}
