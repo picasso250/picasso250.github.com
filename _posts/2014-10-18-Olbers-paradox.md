@@ -1,7 +1,9 @@
 ---
-title: 奥伯斯佯谬
+title: 【翻译】奥伯斯佯谬
 layout: post
 ---
+
+原文：[Olbers' Paradox](http://math.ucr.edu/home/baez/physics/Relativity/GR/olbers.html)
 
 为什么夜空是一片黑暗？
 
