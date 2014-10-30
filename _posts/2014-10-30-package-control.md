@@ -1,5 +1,5 @@
 ---
-title: package controll ip
+title: Package Control IP
 layout: post
 ---
 
