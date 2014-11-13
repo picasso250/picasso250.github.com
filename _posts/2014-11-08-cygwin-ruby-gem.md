@@ -33,3 +33,17 @@ layout: post
      ~/.gem/ruby/gems/jekyll-2.5.1/bin/jekyll
 
 就可以了。
+
+如果你使用了代码高亮，可能会有报错：
+
+    Liquid Exception: No such file or directory - C:\Windows\system32\cmd.exe in _                                                                                      posts/2012-09-15-if-in-Java-opcode.md/#excerpt
+
+我实验了，安装了 python 和 Pygments 之后，依然出现这个报错，据说是兼容性问题，于是我就在 _config.yml 中添加了
+
+    highlighter: rouge
+
+然后
+
+    gem install rouge
+
+于是就好了。
