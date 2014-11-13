@@ -38,7 +38,7 @@ layout: post
 
     Liquid Exception: No such file or directory - C:\Windows\system32\cmd.exe in _                                                                                      posts/2012-09-15-if-in-Java-opcode.md/#excerpt
 
-我实验了，安装了 python 和 Pygments 之后，依然出现这个报错，据说是兼容性问题，于是我就在 _config.yml 中添加了
+我安装了 python 和 Pygments 之后，依然出现这个报错，据说是兼容性问题。又听说 [jekyll现在支持一个ruby native 的语法高亮](http://yizeng.me/2013/05/10/setup-jekyll-on-windows/)，于是我就在 _config.yml 中添加了
 
     highlighter: rouge
 
