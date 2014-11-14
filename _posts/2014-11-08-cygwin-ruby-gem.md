@@ -8,7 +8,11 @@ layout: post
 
     gem install jekyll
 
-时报错。加入 debug 参数再运行一下。
+时报错。
+
+你可以使用一个 [PortableJekyll](https://github.com/madhur/PortableJekyll)，但问题在于这个东西特别大——超过600M，我下载了2个小时也没下载下来。
+
+于是我们加入 debug 参数再运行一下。
 
     gem install jekyll --debug
 
