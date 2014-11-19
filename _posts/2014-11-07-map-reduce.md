@@ -1,5 +1,5 @@
 ---
-title: 一句话解释 MapReduce
+title: 一句话解释 MapReduce(草稿)
 layout: post
 ---
 

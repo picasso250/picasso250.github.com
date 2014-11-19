@@ -1,5 +1,5 @@
 ---
-title: why lisp so diao
+title: 为什么 LisP 如此牛逼 (草稿)
 layout: post
 ---
 
