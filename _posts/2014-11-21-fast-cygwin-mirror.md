@@ -3,7 +3,7 @@ title: Fast Cygwin Mirror
 layout: post
 ---
 
-cygwin is slow, use this script
+If you find slow when istall cygwin package, use this script to select a fast mirror site.
 
 <% highlight php %>
 foreach (file('http://cygwin.com/mirrors.lst') as $line) {
