@@ -1,5 +1,5 @@
 ---
-title: Not authorized to perform operation.
+title: [Debian, Testing]Not authorized to perform operation.
 layout: post
 ---
 
@@ -8,7 +8,7 @@ layout: post
 当你在图形界面里点击硬盘的盘符，希望挂载一个分区的时候，可能会遇到
 `Not authorized to perform operation` 的问题，权限不够，无法mount该分区。
 
-我在将 `Debian` 升级成 `testing` 分支的时候，就遇到了这个问题，不论是 Gnome 还说 XFCE 都有此问题。
+我在将 `Debian` 升级成 `testing` 分支的时候，就遇到了这个问题，不论是 Gnome 还是 XFCE 都有此问题。
 
 解决方法是下面几步
 

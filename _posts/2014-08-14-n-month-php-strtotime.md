@@ -8,7 +8,7 @@ layout: post
 
 为什么不是一个Bug呢，你们可以感受一下：
 
-```php
+{% highlight php %}
 <?php
 $now = strtotime('2014-05-31 23:59:59');
 echo date('Y-m-d', $now), "\n";
@@ -16,7 +16,7 @@ foreach (range(-12, 12) as $n) {
     echo "$n\t-->\t", date('Y-m-d', n_month($n, strtotime('2014-05-31 23:59:59'))),"\n";
     echo "$n\t-->\t", date('Y-m-d', strtotime("$n month", $now)),"\n";
 }
-```
+{% endhighlight php %}
 
 5月31日往前一个月是什么时候呢？自然是4月31号。可是4月没有31号，只有30号，那么我们就把4月31号映射进5月份，那不就是5月1号吗。哇，就这么愉快的决定了。
 
@@ -27,7 +27,7 @@ foreach (range(-12, 12) as $n) {
 
 解决方案
 
-```php
+{% highlight php %}
 <?php
 function n_month($n, $now = null)
 {
@@ -36,11 +36,11 @@ function n_month($n, $now = null)
     }
     return strtotime("$n month", strtotime(date('Y-m-01 00:00:01', $now)));
 }
-```
+{% endhighlight %}
 
 或者更特殊的，我们只是想让年月按照我们希望改变（其他的不管），于是，我们可以写出另一个函数：
 
-```php
+{% highlight php %}
 <?php
 
 // test
@@ -60,4 +60,4 @@ function n_month($n, $year = null, $month = null)
     }
     return array(strval($year), strval($month));
 }
-```
+{% endhighlight %}

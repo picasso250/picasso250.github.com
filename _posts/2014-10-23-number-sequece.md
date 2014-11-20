@@ -1,5 +1,5 @@
 ---
-title: 数列和级数
+title: 数列和级数(草稿)
 layout: post
 ---
 
