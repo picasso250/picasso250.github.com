@@ -1,5 +1,5 @@
 ---
-title: Ruby Gem install Jekyll on Cygwin
+title: Ruby Gem install Jekyll on Windows
 layout: post
 ---
 
@@ -10,7 +10,13 @@ layout: post
 
 时报错。
 
-你可以使用一个 [PortableJekyll](https://github.com/madhur/PortableJekyll)，但问题在于这个东西特别大——超过600M，我下载了2个小时也没下载下来。
+你可以使用一个 [PortableJekyll](https://github.com/madhur/PortableJekyll)，但问题在于这个东西特别大——超过600M.
+
+这个东西需要 Python2, 只要将python.exe 原地复制成 python2.exe 就可以了.
+
+---
+
+以下是 cygwin 的安装过程. 问题在于 cygwin 不可以 serve , 不知为何.
 
 于是我们加入 debug 参数再运行一下。
 
