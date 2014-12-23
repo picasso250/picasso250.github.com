@@ -17,6 +17,7 @@ body {
   font: 13.34px Helvetica, Arial, sans-serif;
   font-size: small;
   text-align: center;
+  padding-left: 1em;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -58,9 +59,14 @@ a:visited { color: #a0a; }
 .site {
   font-size: 115%;
   text-align: justify;
-  width: 42em;
   margin: 3em auto 2em;
   line-height: 1.5em;
+}
+
+@media screen and (min-width: 960px) {
+  .site {
+    width: 42em;
+  }
 }
 
 .header a {

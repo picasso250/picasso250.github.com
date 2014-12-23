@@ -1,5 +1,5 @@
 ---
-title: [Debian, Testing]Not authorized to perform operation.
+title: Debian, Testing. Not authorized to perform operation
 layout: post
 ---
 
