@@ -4,7 +4,9 @@ layout: post
 ---
 
 C++的亲爸爸写了这篇博客:
-https://isocpp.org/blog/2014/12/myths-2
+[Five Popular Myths about C++,](http://isocpp.org/blog/2014/12/myths-2)
+
+简译如下
 
 1. 要懂C++, 先得懂C
 2. C++是面向对象的
