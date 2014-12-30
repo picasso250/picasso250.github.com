@@ -53,3 +53,12 @@ layout: post
     FILTER_VALIDATE_URL
 
 也是够用了.
+
+不要提前过滤
+
+magic_quotes() 之殇
+
+html_special_chars()
+
+$pdo->prepare();
+
