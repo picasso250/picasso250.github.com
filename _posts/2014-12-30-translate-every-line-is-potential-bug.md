@@ -5,6 +5,8 @@ layout: post
 
 [Every Line Is a Potential Bug](http://www.teamten.com/lawrence/writings/every_line_is_a_potential_bug.html)
 
+简译如下:
+
 我去年<del>买了个</del>写了个程序, 是从一个hash表里取消息, 第一次取的时候, 消息可能还未生产出来, 所以代码是这样的:
 
     while ((message = map.get(key)) == null && System.currentTimeMillis() < timeoutTime) {
