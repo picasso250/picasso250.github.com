@@ -1,7 +1,9 @@
 ---
-title: 每一行代码都可能产生bug
+title: 翻译.每一行代码都可能产生bug
 layout: post
 ---
+
+[Lawrence Kesteloot](http://www.linkedin.com/pub/lawrence-kesteloot/2/68a/7a3) 是梦工厂的工程师, 在1997年就曾经写过一个约 200,000 行的工具. 他有一个观点, 我非常认同:
 
 [Every Line Is a Potential Bug](http://www.teamten.com/lawrence/writings/every_line_is_a_potential_bug.html)
 
