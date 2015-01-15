@@ -1,5 +1,5 @@
 ---
-title: 翻译.每一行代码都可能产生bug
+title: 译.每一行代码都可能产生bug
 layout: post
 ---
 
