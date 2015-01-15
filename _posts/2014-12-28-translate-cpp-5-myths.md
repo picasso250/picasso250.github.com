@@ -1,36 +1,38 @@
 ---
-title: 翻译.C++的5个迷思.草稿
+title: 译.C++的5个迷思.草稿
 layout: post
 ---
 
 C++的亲爸爸写了这篇博客:
 [Five Popular Myths about C++,](http://isocpp.org/blog/2014/12/myths-2)
 
+在这篇博客里, 他讲了关于C++的5个众所周知的 **误解**, 看了之后, 我受益良多. 我深深反省, 以往我不喜欢C++, 是因为我不懂C++, 又很懂C, 而且盲目迷信了Linus. 现在用C++做leetcode, 很顺手.
+
 简译如下
 
 1. 要懂C++, 先得懂C
 2. C++是面向对象的
-3. 要可靠, 还得靠GC
+3. GC 才可靠
 4. 要效率, 整汇编
-5. C++只能用来开发大而复杂的系统
+5. C++只适合开发大而复杂的系统
 
 迷思一 要懂C++, 先得懂C
 ----------------------
 
 不是这样的. 基本的C++编程可比C简单多了.
 
-C基本上是C++的一个子集. 但并不是最容易学习的一个子集. 它缺少运算符重载, 类型安全, 标准库也不像C++一样可以大大简化简单的工作. 考虑一个小小的函数, 构造一个电子邮件地址.
+C是C++子集. 但并不是最容易学习的那部分. 它缺少运算符重载, 类型安全, 标准库也不像C++一样可以大大简化简单的工作. 考虑一个小小的函数, 构造一个电子邮件地址.
 
     string compose(const string& name, const string& domain)
     {
       return name+'@'+domain;
     }
 
-这个函数的使用函数是这样的:
+这个函数的使用方式是这样的:
 
     string addr = compose("gre","research.att.com");
 
-C版本的这个函数需要显式操作字符串和内存.
+C版本的需要显式操作字符串和内存.
 
     char* compose(const char* name, const char* domain)
     {
@@ -64,7 +66,7 @@ C版本的这个函数需要显式操作字符串和内存.
 
 然而, C并不是C++易学易用的部分. 并且, 学习相当的C++之后, C子集也就好学了. 在C++之前学C就意味着要重新忍受C的那些缺陷, 而这些都是C++中已经避免了的.
 
-有了 C++11 之后, C++ 变得更易入门. 举个例子, 这是标准库 vector 的初始化方式.
+有了 C++11 之后, C++ 变得更易入门. 举个例子, 这是标准库 `vector` 的初始化方式.
 
     vector<int> v = {1,2,3,5,8,13};
 
@@ -80,7 +82,7 @@ range-for 可以遍历任何序列, 所以我们可以直接遍历 initializer l
 
     for (int x : {1,2,3,5,8,13}) test(x);
 
-C++11 的目标之一, 就是让简单的归于简单. 自然, 这个简单不能以性能为代价.
+C++11 的目标之一, 就是让简单的归于简单. 同时, 不引起性能过载.
 
 迷思二 C++是面向对象的
 ------------------------
@@ -92,7 +94,7 @@ C++11 的目标之一, 就是让简单的归于简单. 自然, 这个简单不�
 迷思三 要可靠, 还得靠GC
 ----------------------
 
-垃圾收集机制运行的不错, 但远远谈不上完美. 内存可能有残留, 有些资源也全是内存. 考虑如下情况:
+垃圾收集机制运行的不错, 但远远谈不上完美. 内存可能有残留, 并且资源也不全是内存. 考虑如下情况:
 
     class Filter { // take input from file iname and produce output on file oname
     public:
@@ -115,7 +117,7 @@ Filter 的构造器打开了两个文件. 然后, Filter 读入文件内容, 做
       delete p;
     }
 
-在有垃圾收集机制的语言中, 我们不太会有 `delete` 关键字, 也没有解构函数(这个在逻辑就不太稳定, 并且损害性能). 对内存的回收, 在这个例子中, GC 可以做到完美, 但是文件就不能自动回收了. 需要用户操作(代码), 手工管理资源容易产生bug.
+在有垃圾收集机制的语言中, 我们不太会有 `delete` 关键字, 也没有解构函数(这个在逻辑上就不太稳定, 并且损害性能). 对内存的回收, 在这个例子中, GC 可以做到完美, 但是文件就不能自动回收了. 需要用户操作(代码), 手工管理资源容易产生bug.
 
 传统的C++代码使用解构函数来确保资源被正确回收. 一般说来, 这种资源在构造函数中申请, 这种方式被称为 RAII. 在 `user()` 中, `flt` 的解构函数会隐式调用 `is` 和 `os` 的解构函数, 这些解构函数依序关闭文件, 释放相关资源. delete 操作符也释放 *p 的相关资源.
 
@@ -173,9 +175,9 @@ C++老手会发现 `user()` 还是罗嗦易错的, 下面的会更好一些:
 
 这是我理想中的资源管理方式. 这里的资源不仅仅是内存, 还包括其他的资源, 比如文件, 线程 和 锁. 但是这种方式真的普适吗? 如果资源作为参数传进函数中去会如何? 如何一个资源的所有者不止一个会如何?
 
-### 转移所有权: move
+### 三,一 转移所有权: move
 
-来让我们先看看在作用域之间转移对象实例的问题. 这个问题的实质是如何从一个作用域中获得很多信息, 但同时不引起严重的过载或者易错的指针赋值. 传统的方案是使用指针:
+来让我们先看看在作用域之间转移对象实例的问题. 这个问题的实质是如何从一个作用域中获得很多信息, 但同时不引起严重的性能过载, 也不使用易错的指针赋值. 传统的方案是使用指针:
 
     X* make_X()
     {
@@ -202,3 +204,81 @@ C++老手会发现 `user()` 还是罗嗦易错的, 下面的会更好一些:
     unique_ptr<Matrix> operator+(const Matrix& a, const Matrix& b);
     Matrix res = *(a+b);
 
+等等, 这个 `*` 是怎么回事? 为了得到对象, 而非指针, 我需要这个符号. 大多数情况下, 这个比较简单. 但对于小对象, 我不会想动用指针这种大杀器.
+
+    double sqrt(double); // a square root function
+    double s2 = sqrt(2); // get the square root of 2
+
+另一方面, 大数据对象一般是句柄对象. 比如 `istream`, `string`, `vector`, `list`, 和 `thread`. 他们只是几个信息字节, 以确保对大量数据的正确访问. 再次考虑矩阵的加法, 我们想要的效果是:
+
+    Matrix operator+(const Matrix& a, const Matrix& b); // return the sum of a and b
+    Matrix r = x+y;
+
+很容易想到实现:
+
+    Matrix operator+(const Matrix& a, const Matrix& b)
+    {
+      Matrix res;
+      // ... fill res with element sums ...
+      return res;
+    }
+
+默认情况下, 这种做法导致res复制到`r`, 但既然 `res` 只是即将被删除, 那么我们没必要复制, 我们只要换一下指针的指向就可以了, 就像将 `res` 偷出来一样. 这是个众所周知的技巧, 很多人也是这么做的, 但这个技巧总不是那么光明正大, 而且难于理解. C++11 直接支持句柄对象被转移所有权时"偷内存". 考虑2维的矩阵.
+
+    class Matrix {
+      double* elem; // pointer to elements
+      int nrow;     // number of rows
+      int ncol;     // number of columns
+    public:
+      Matrix(int nr, int nc)                  // constructor: allocate elements
+        :elem{new double[nr*nc]}, nrow{nr}, ncol{nc}
+      {
+        for(int i=0; i<nr*nc; ++i) elem[i]=0; // initialize elements
+      }
+
+      Matrix(const Matrix&);                  // copy constructor
+      Matrix operator=(const Matrix&);        // copy assignment
+
+      Matrix(Matrix&&);                       // move constructor
+      Matrix operator=(Matrix&&);             // move assignment
+
+      ~Matrix() { delete[] elem; }            // destructor: free the elements
+
+    // …
+    };
+
+我们用引用符号 `&` 表示复制操作, 用右值引用符号 `&&` 表示**移权**(所有权转移)操作. 移权操作应该"偷"到数据的表述, 然后留下一个空对象(源对象). 也就是:
+
+    Matrix::Matrix(Matrix&& a)                   // move constructor
+      :nrow{a.nrow}, ncol{a.ncol}, elem{a.elem}  // “steal” the representation
+    {
+      a.elem = nullptr;                          // leave “nothing” behind
+    }
+
+就是如此, 当编译器看到 `return res;`, 它意识到 `res` 即将被摧毁, 也就是说, 在return 之后, `res` 不会再被使用. 这意味着要使用<u>移权构造器</u>, 而不是<u>复制构造器</u>. 对于
+
+    Matrix r = a+b;
+
+`operator+()` 里的 `res` 变空了, `res` 里的元素变成了 `r`的元素, 我们成功的将结果的元素(或许成G大小的)移出了 `operator+()`, 变成调用者的变量. 同时, 代价很小(或许4个字长的赋值).
+
+专家级的C++玩家会说, 优秀的编译器可以节省 return 时的复制代价(在这个case中, 就是省下了4个字长的拷贝, 和一个解构器的调用). 然而, 这依赖于实现, 我不喜欢我的程序的性能依赖于编译器的聪明程度(译者: 这是在黑JIT吗?). 不止如此, 一个可以消除复制的编译器, 也可以容易的消除移权操作. 我们上面讲的是一个简单可靠而且通用的方法, 当在作用域之间转移大量信息的时候, 它可以消除复杂度和代价,
+
+再一次, 我们不需要定义这些复制和移动的操作, 如果一个类的成员变量已经有了正确的行为, 我们可以依赖于默认的行为. 考虑:
+
+class Matrix {
+    vector<double> elem; // elements
+    int nrow;            // number of rows
+    int ncol;            // number of columns
+public:
+    Matrix(int nr, int nc)    // constructor: allocate elements
+      :elem(nr*nc), nrow{nr}, ncol{nc}
+    { }
+
+    // ...
+};
+
+这个版本的 `Matrix` 和上一个版本的行为一致, 除了他的表述更占空间一点(一个 `vector` 通常占用3个字长).
+
+那么非句柄对象怎么办呢? 如果是小对象, 就像 `int` 或者 `complex<double>` 一样对待它, 不用操心. 否则就为它造一个句柄对象, 或者return的时候使用智能指针. 比如 `unique_ptr` 和 `shared_ptr`. 珍爱生命, 不使用裸指针, 远离 `new` 和 `delete`.
+
+### 四,二 共享所有权: shared_ptr
