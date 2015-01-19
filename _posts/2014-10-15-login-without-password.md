@@ -13,7 +13,7 @@ WebMaker 作出了一个不依赖密码的登录过程，这里是介绍：
 
 我在 Mozilla 工作，开发了一个不依赖密码的登录流程，也不依赖脸书等社交媒体。
 这是一种很有力的替代品，希望广大设计师和程序员能够进一步推进发展。
-如果我们不再需要密码，密码就不会被遗忘、被泄露和在网站间的重复。
+如果我们不再使用密码，就不会有遗忘密码, 泄露密码和在网站间的重复密码的危险。
 
 ![Ricardo Vazquez 设计](http://notebook.ideapublic.org/wp-content/uploads/sites/5/2014/09/join-sign-in-buttons-300x66.png)
 

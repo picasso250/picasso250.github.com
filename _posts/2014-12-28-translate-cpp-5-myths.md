@@ -282,3 +282,4 @@ public:
 那么非句柄对象怎么办呢? 如果是小对象, 就像 `int` 或者 `complex<double>` 一样对待它, 不用操心. 否则就为它造一个句柄对象, 或者return的时候使用智能指针. 比如 `unique_ptr` 和 `shared_ptr`. 珍爱生命, 不使用裸指针, 远离 `new` 和 `delete`.
 
 ### 四,二 共享所有权: shared_ptr
+
