@@ -6,7 +6,7 @@ layout: post
 C++的亲爸爸写了这篇博客:
 [Five Popular Myths about C++,](http://isocpp.org/blog/2014/12/myths-2)
 
-在这篇博客里, 他讲了关于C++的5个众所周知的 **误解**, 看了之后, 我受益良多. 我深深反省, 以往我不喜欢C++, 是因为我不懂C++, 又很懂C, 而且盲目迷信了Linus. 现在用C++做leetcode, 很顺手.
+在这篇博客里, 他讲了关于C++的5个众所周知的 **误解**, 看了之后, 我受益良多. 我深深反省, 以往我不喜欢C++, 是因为我不懂 C++, 又自以为很懂C, 而且盲目迷信 Linus. 现在用 C++ 做 leetcode, 很顺手.
 
 简译如下
 
@@ -283,3 +283,52 @@ public:
 
 ### 四,二 共享所有权: shared_ptr
 
+懂垃圾收集机制的人都知道, 不是所有的对象都只有一个所有者. 这就意味着, 一旦最后一个指向它的引用被摧毁, 这个对象也应该被回收. 因此, 我们需要一个共享所有权的机制. 比如说, 两个任务之间互通信息的时候, 需要有一个同步队列 `sync_queue`. 一个消费者和一个生产者都有一个指向 `sync_queue` 的指针.
+
+    void startup()
+    {
+      sync_queue* p  = new sync_queue{200};  // trouble ahead!
+      thread t1 {task1,iqueue,p};  // task1 reads from *iqueue and writes to *p
+      thread t2 {task2,p,oqueue};  // task2 reads from *p and writes to *oqueue
+      t1.detach();
+      t2.detach();
+    }
+
+我只关心一个问题: 谁应该删除 `sync_queue`? 经典的正确答案只有一个: 最后使用 `sync_queue` 的.垃圾收集的原始机制就是引用计数: 维护一个整数, 这个整数代表指向每个对象的指针数量, 一旦这个数量减少到0, 就删除这个对象. 许多语言都使用这个创意的变体, C++也支持这种机制, 也就是前面提到的 shared_ptr. 上面的例子就变成了:
+
+    void startup()
+    {
+      auto p = make_shared<sync_queue>(200);  // make a sync_queue and return a stared_ptr to it
+      thread t1 {task1,iqueue,p};  // task1 reads from *iqueue and writes to *p
+      thread t2 {task2,p,oqueue};  // task2 reads from *p and writes to *oqueue
+      t1.detach();
+      t2.detach();
+    }
+
+现在 task1 和 task2 的分解器会摧毁他们拥有的所有 shared_ptr(大部分而言, 不需显式指明), 最后的任务会摧毁 sync_queue.
+
+这样, 事情变得简单, 同时还相当高效. 没有什么复杂的运行时垃圾收集器. 最重要的是, 被共享的不止 sync_queue 占用的内存, 还有其他的同步结构(互斥体, 锁, 还有其他东西). 再一次, 我们拥有的不只是内存模型, 而是一种通用的资源模型. 我们处理背后的同步结构体的方式,就像之前我们处理文件流一样.
+
+当然, 如果在某个作用域中我们引入一个变量, 让他和任务们同生死, shared_ptr 就变得不重要了. 但这并非总是容易的事. 所以 C++11 提供了 unique_ptr (用于独占所有权), 也提供了 shared_ptr (用于共享所有权).
+
+### 三,三 类型安全
+
+垃圾收集机制还关乎类型安全. 一旦我们拥有显式的删除操作, 可能会被误用. 比如:
+
+    X* p = new X;
+    X* q = p;
+    delete p;
+    // ...
+    q->do_something();  // the memory that held *p may have been re-used
+
+裸 `delete` 非常危险, 而且不必要. 让资源管理类(如 string, ostream, thread, unique_ptr, 和 shared_ptr) 使用 delete 操作符吧, 在那里, 它们和new 被小心的匹配, 因此无害.
+
+### 三,四 总结:理想的资源管理
+
+在资源管理这个问题上, 垃圾收集是我最后相到的解决方案, 它根本没资格称之为解决方案, 更理想的解决方案如下:
+
+1. 使用适当的抽象, 使得资源被有层次的, 隐式的处理. 让这些类成为作用域变量, 让作用域控制它们的生死.
+2. 当需要指针或者引用时, 使用智能指针, 比如 unique_ptr 或 shared_ptr, 来表示所有权.
+3. 如果失败了(比如你的代码从属于一个傻逼程序, 这个程序使用了大量的指针, 也没有依赖于语言的资源管理机制), 那么就手动管理非内存资源, 然后使用一个传统的垃圾收集器来处理那几乎不可避免的内存泄露.
+
+这个策略完美吗? 不, 但通用而且简单. 传统的垃圾收集机制也不完美, 而且也不能管理非内存的资源.
