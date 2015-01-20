@@ -4,7 +4,9 @@ layout: post
 ---
 
 C++的亲爸爸写了这篇博客:
-[Five Popular Myths about C++,](http://isocpp.org/blog/2014/12/myths-2)
+[Five Popular Myths about C++, Part 1](http://isocpp.org/blog/2014/12/myths-1)
+[Five Popular Myths about C++, Part 2](http://isocpp.org/blog/2014/12/myths-2)
+[Five Popular Myths about C++, Part 3](http://isocpp.org/blog/2014/12/myths-3)
 
 在这篇博客里, 他讲了关于C++的5个众所周知的 **误解**, 看了之后, 我受益良多. 我深深反省, 以往我不喜欢C++, 是因为我不懂 C++, 又自以为很懂C, 而且盲目迷信 Linus. 现在用 C++ 做 leetcode, 很顺手.
 
