@@ -283,7 +283,7 @@ public:
 
 那么非句柄对象怎么办呢? 如果是小对象, 就像 `int` 或者 `complex<double>` 一样对待它, 不用操心. 否则就为它造一个句柄对象, 或者return的时候使用智能指针. 比如 `unique_ptr` 和 `shared_ptr`. 珍爱生命, 不使用裸指针, 远离 `new` 和 `delete`.
 
-### 四,二 共享所有权: shared_ptr
+### 三,二 共享所有权: shared_ptr
 
 懂垃圾收集机制的人都知道, 不是所有的对象都只有一个所有者. 这就意味着, 一旦最后一个指向它的引用被摧毁, 这个对象也应该被回收. 因此, 我们需要一个共享所有权的机制. 比如说, 两个任务之间互通信息的时候, 需要有一个同步队列 `sync_queue`. 一个消费者和一个生产者都有一个指向 `sync_queue` 的指针.
 
@@ -315,7 +315,7 @@ public:
 
 ### 三,三 类型安全
 
-垃圾收集机制还关乎类型安全. 一旦我们拥有显式的删除操作, 可能会被误用. 比如:
+垃圾收集机制还关乎类型安全. 显式的删除操作经常被误用. 比如:
 
     X* p = new X;
     X* q = p;
@@ -323,7 +323,7 @@ public:
     // ...
     q->do_something();  // the memory that held *p may have been re-used
 
-裸 `delete` 非常危险, 而且不必要. 让资源管理类(如 string, ostream, thread, unique_ptr, 和 shared_ptr) 使用 delete 操作符吧, 在那里, 它们和new 被小心的匹配, 因此无害.
+裸 `delete` 非常危险且不必要. 让资源管理类(如 string, ostream, thread, unique_ptr, 和 shared_ptr) 使用 delete 操作符吧, 在那里, 它们和new 被小心的匹配, 因此无害.
 
 ### 三,四 总结:理想的资源管理
 
