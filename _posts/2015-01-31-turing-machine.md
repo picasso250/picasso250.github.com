@@ -17,6 +17,8 @@ layout: post
 
 很简单, 初始处于begin状态, 打印一个1, 然后转到print0状态不断打印0就可以了. L和R表示左或者右, P表示打印, 后面跟着的字母表示要打印的东西.
 
+这个[图灵机在这里](http://picasso250.github.io/Turing-Machine/), 你可以亲手操作一个虚拟的图灵机.
+
 然后我们看看图灵机如何计算1
 
 [!图灵机计算1](/image/turing-1.png)
