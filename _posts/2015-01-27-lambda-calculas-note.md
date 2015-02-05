@@ -222,4 +222,35 @@ $$
 
 类似的, $x+y+z$其实是$[[x+y]+z]$.
 
-当对这种形式$(\lambda xM)$ 的表达式求值时, 你可能产生困惑. 如果令$M=xyz$, 那么有$(\lambdaxxyz)$, 这就产生了歧义. 
+当对这种形式$(\lambda xM)$ 的表达式求值时, 你可能产生困惑. 如果令$M=xyz$, 那么有$(\lambdaxxyz)$, 这就产生了歧义. 抽象符在哪里结束? 表达式在哪里开始? 为了解决这个问题, 我们使用 `.`.
+
+**记号 2.1.7** 当省略括号可能引起歧义的时候, 将 `.` 放在小括号或者中括号的左边. 解释规则如下: 将点替换成左括号, 右括号放在尽可能远的右方. 举例: $(\lambda x.MN)\leftarrow(\lambda x(MN))$, $(\lambda xy.MN)\leftarrow(\lambda xy(MN))$, $(\lambda x.\lambda y.MN)\leftarrow(\lambda x(\lambda y(MN)))$
+
+到现在为止, 我们已经形式上建立了 _λ演算_. 已定义的函数如下:
+
+$$
+\begin{align} 
+I & \leftarrow\lambda a.a \\
+H & \leftarrow\lambda a.I \\
+T & \leftarrow\lambda xf.fx \\
+J & \leftarrow\lambda fxyz.fx(fzy) \\
+B & \leftarrow\lambda fgx.f(gx) \\
+C & \leftarrow\lambda fxy.fyx \\
+D & \leftarrow\lambda x.xx \\
+W & \leftarrow\lambda fx.fxx \\
+S & \leftarrow\lambda nfx.f(nfx) \\
+\end{align}
+$$
+
+## 2.2 转换 ##
+
+现介绍在良构的公式上的基本操作: _转化_. 尽管有很多形式的转化, 我们先介绍三种:
+
+* I 给定一个公式, 我们可以对任意部分$M$做替换操作$M[x:=y]$, 只要x不是M的自由变量且y不在M中. 注意: 我们所做的只是替换名称. 这个转化一般称之为 _α转化_.
+* II 给定一个公式, 我们可以替换其中任意一个 $((\lambda xM)N)$ 为 $M[x:=N]$, 只要M的绑定变量不包含x, 也不包含N. 应用这条规则, 称为 _收缩_. 这个转化方式通常称为 _β-转化_.
+* III 给定一个公式, 我们可以替换其中任意一个 $M[x:=N]$ 为 $((\lambda xM)N)$, 只要 $((\lambda xM)N)$ 是良构的, 且N的绑定变量和x不同, 也和N的自由变量不同. 注意: 前一个规则是缩写, 这个规则是扩写.
+
+**定义 2.2.1** 一个公式的 _部分_ 指的是任何连贯而良构的公式, 且不从 $\lambda$ 之后立即开始的.
+
+注意: _规则I_ 可以将 
+
