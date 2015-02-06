@@ -27,7 +27,10 @@ tce-ab 可以非常容易的搜索和安装软件.
 
 install vim
 
-	tce-load -wi vim.tcz
+    tce-load -wi vim.tcz
+    tce-load -wi bash.tcz
+    tce-load -wi elinks-nodep.tcz
+	tce-load -wi openssh.tcz
 
 
 install nginx
@@ -37,4 +40,5 @@ install nginx
 maybe we can install php now
 
 tce-load -wi compiletc.tcz
-tce-load -wi ngnix.tcz
+tce-load -wi libxml2-dev.tcz
+tce-load -wi perl5.tcz
