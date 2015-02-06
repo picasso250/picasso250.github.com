@@ -222,7 +222,7 @@ $$
 
 类似的, $x+y+z$其实是$[[x+y]+z]$.
 
-当对这种形式$(\lambda xM)$ 的表达式求值时, 你可能产生困惑. 如果令$M=xyz$, 那么有$(\lambdaxxyz)$, 这就产生了歧义. 抽象符在哪里结束? 表达式在哪里开始? 为了解决这个问题, 我们使用 `.`.
+当对这种形式$(\lambda xM)$ 的表达式求值时, 你可能产生困惑. 如果令$M=xyz$, 那么有$(\lambda xxyz)$, 这就产生了歧义. 抽象符在哪里结束? 表达式在哪里开始? 为了解决这个问题, 我们使用 `.`.
 
 **记号 2.1.7** 当省略括号可能引起歧义的时候, 将 `.` 放在小括号或者中括号的左边. 解释规则如下: 将点替换成左括号, 右括号放在尽可能远的右方. 举例: $(\lambda x.MN)\leftarrow(\lambda x(MN))$, $(\lambda xy.MN)\leftarrow(\lambda xy(MN))$, $(\lambda x.\lambda y.MN)\leftarrow(\lambda x(\lambda y(MN)))$
 
