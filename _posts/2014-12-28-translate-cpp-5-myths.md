@@ -3,23 +3,23 @@ title: 译.C++的5个迷思.草稿
 layout: post
 ---
 
-C++的亲爸爸写了这篇博客:
-[Five Popular Myths about C++, Part 1](http://isocpp.org/blog/2014/12/myths-1)
-[Five Popular Myths about C++, Part 2](http://isocpp.org/blog/2014/12/myths-2)
-[Five Popular Myths about C++, Part 3](http://isocpp.org/blog/2014/12/myths-3)
+C++的亲爸爸写了一系列博客:
 
-在这篇博客里, 他讲了关于C++的5个众所周知的 **误解**, 看了之后, 我受益良多. 我深深反省, 以往我不喜欢C++, 是因为我不懂 C++, 又自以为很懂C, 而且盲目迷信 Linus. 现在用 C++ 做 leetcode, 很顺手.
+- [Five Popular Myths about C++, Part 1](http://isocpp.org/blog/2014/12/myths-1)
+- [Five Popular Myths about C++, Part 2](http://isocpp.org/blog/2014/12/myths-2)
+- [Five Popular Myths about C++, Part 3](http://isocpp.org/blog/2014/12/myths-3)
+
+在这些博客里, 他讲了关于C++的5个众所周知的 **误解**, 看了之后, 我受益良多. 我深深反省, 以往我不喜欢C++, 是因为我不懂 C++, 又自以为很懂C, 而且盲目迷信 Linus. 现在用 C++ 做 leetcode, 很顺手.
 
 简译如下
 
 1. 要懂C++, 先得懂C
 2. C++是面向对象的
-3. GC 才可靠
-4. 要效率, 整汇编
+3. 可靠的软件都用GC
+4. 只有汇编才是真效率
 5. C++只适合开发大而复杂的系统
 
-迷思一 要懂C++, 先得懂C
-----------------------
+## 迷思一 要懂C++, 先得懂C ##
 
 不是这样的. 基本的C++编程可比C简单多了.
 
@@ -56,7 +56,7 @@ C版本的需要显式操作字符串和内存.
 
 最后, 你猜那个版本性能好? 当然, 是C++版的. 因为不需要计算字符串的长度, 也不需要在堆上分配空间.
 
-### 学习 C++
+### 一,一 学习 C++ ###
 
 这不是孤例, 这是很典型的例子. 为什么那么多老师还在先教C呢?
 
@@ -86,15 +86,13 @@ range-for 可以遍历任何序列, 所以我们可以直接遍历 initializer l
 
 C++11 的目标之一, 就是让简单的归于简单. 同时, 不引起性能过载.
 
-迷思二 C++是面向对象的
-------------------------
+## 迷思二 C++是面向对象的 ##
 
 不. C++支持面向对象, 和其他一些编程范式, 不仅仅局限于某一个范式.
 
-...
+略.
 
-迷思三 要可靠, 还得靠GC
-----------------------
+## 迷思三 可靠的软件都用GC ##
 
 垃圾收集机制运行的不错, 但远远谈不上完美. 内存可能有残留, 并且资源也不全是内存. 考虑如下情况:
 
@@ -267,17 +265,17 @@ C++老手会发现 `user()` 还是罗嗦易错的, 下面的会更好一些:
 
 再一次, 我们不需要定义这些复制和移动的操作, 如果一个类的成员变量已经有了正确的行为, 我们可以依赖于默认的行为. 考虑:
 
-class Matrix {
-    vector<double> elem; // elements
-    int nrow;            // number of rows
-    int ncol;            // number of columns
-public:
-    Matrix(int nr, int nc)    // constructor: allocate elements
-      :elem(nr*nc), nrow{nr}, ncol{nc}
-    { }
+    class Matrix {
+        vector<double> elem; // elements
+        int nrow;            // number of rows
+        int ncol;            // number of columns
+    public:
+        Matrix(int nr, int nc)    // constructor: allocate elements
+          :elem(nr*nc), nrow{nr}, ncol{nc}
+        { }
 
-    // ...
-};
+        // ...
+    };
 
 这个版本的 `Matrix` 和上一个版本的行为一致, 除了他的表述更占空间一点(一个 `vector` 通常占用3个字长).
 
@@ -334,3 +332,42 @@ public:
 3. 如果失败了(比如你的代码从属于一个傻逼程序, 这个程序使用了大量的指针, 也没有依赖于语言的资源管理机制), 那么就手动管理非内存资源, 然后使用一个传统的垃圾收集器来处理那几乎不可避免的内存泄露.
 
 这个策略完美吗? 不, 但通用而且简单. 传统的垃圾收集机制也不完美, 而且也不能管理非内存的资源.
+
+## 迷思四 想要获得性能, 只能写底层代码 ##
+
+大多数人都认为高性能的代码一定是底层的. 甚至有人认为底层代码就代表高性能(如果一段代码很丑, 就一定跑得快! 因为人家花了大量的时间和精力来写这段代码). 你当然可以只用底层代码写高效的程序, 而且有些机器资源确实得用底层代码访问. 但是, 同时测量一下, 看看你的努力是否值得; 现代的C++编译器十分高效, 而且现代的机器架构非常神奇. 如果有必要, 其底层代码最好隐藏在一个良好设计的介面背后, 以方便使用. 通常情况下, 将底层封装后, 也有利于更好的优化性能(比如, 通过防止滥用特性). 如果效率很重要, 先通过高层语言表达出来, 不要一开始就陷入位操作和指针中.
+
+### 四,一 C 的 qsort()
+
+考虑一个简单的例子. 如果你想降序排序一些浮点数, 你可以直接写一段代码. 然而, 除非有特殊需求(比如内存中装不下这些浮点数), 那么再写一遍代码真的是太天真了. 古老的代码已经被写就, 性能还可以的啦. 我最不喜欢的就是C标准库的 `qsort()`:
+
+  int greater(const void* p, const void* q)  // three-way compare
+  {
+    double x = *(double*)p;  // get the double value stored at the address p
+    double y = *(double*)q;
+    if (x>y) return 1;
+    if (x<y) return -1;
+    return 0;
+  }
+
+  void do_my_sort(double* p, unsigned int n)
+  {
+    qsort(p,n,sizeof(*p),greater);
+  }
+
+  int main()
+  {
+    double a[500000];
+    // ... fill a ...
+    do_my_sort(a,sizeof(a)/sizeof(*a));  // pass pointer and number of elements
+    // ...
+  }
+
+如果你不是一个C程序员或者你最近没用过`qsort`, 可能需要一些解释; `qsort` 需要4个参数
+
+- 一个指针, 指向二进制序列
+- 元素的个数
+- 元素的大小
+- 一个比较函数, 参数是两个指针
+
+注意, 这个接口丢失了信息. 我不是在排序普通数据. 我们是在排序 `double`, 但是 `qsort` 不知道这个, 所以, 我们必须提供比较`double`的方法, 

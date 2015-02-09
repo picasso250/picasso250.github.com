@@ -39,6 +39,12 @@ install nginx
 
 maybe we can install php now
 
-tce-load -wi compiletc.tcz
-tce-load -wi libxml2-dev.tcz
-tce-load -wi perl5.tcz
+    tce-load -wi compiletc.tcz
+    tce-load -wi libxml2-dev.tcz
+    tce-load -wi perl5.tcz
+
+---
+
+顺便说一句, 终于知道 virtualbox的端口映射怎么回事了, 只要80映射到80就可以了!
+
+所以, 终于可以轻易的开ssh了!
