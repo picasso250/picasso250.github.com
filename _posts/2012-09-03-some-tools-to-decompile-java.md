@@ -11,3 +11,11 @@ layout: post
 
 3. [JBE](http://set.ee/jbe/)
   这个工具可以直接改 Java 字节码。一些小修小补，用它就行。
+
+---
+
+另:
+
+[Compiling, Executing, and Jar'ing Java Code](http://www.cs.usfca.edu/~parrt/course/601/lectures/java.tools.html)
+
+这个教程讲述了 Java 的编译、执行和打包等等问题，都是基础知识，很简单的。我觉得很好，这样耐心细致的教程并不多见。
