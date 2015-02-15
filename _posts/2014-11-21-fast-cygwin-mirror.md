@@ -21,3 +21,8 @@ If you find slow when install Cygwin packages, use this script to select a fast 
     asort($table);
     print_r($table);
 
+---
+
+Related
+
+- [如何使用 Windows 和 Linux 工作](/2012/11/02/how-to-work-with-windows-and-linux.html)
