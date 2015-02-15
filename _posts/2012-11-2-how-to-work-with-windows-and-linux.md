@@ -90,10 +90,8 @@ layout: post
 
 在 `Preferences - Settings - User` 里面添加
 
-```
-"ensure_newline_at_eof_on_save": true,
-"default_line_ending": "unix"
-```
+    "ensure_newline_at_eof_on_save": true,
+    "default_line_ending": "unix"
 
 总结
 ------

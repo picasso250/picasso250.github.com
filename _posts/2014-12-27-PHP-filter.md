@@ -1,5 +1,5 @@
 ---
-title: PHP, The Good Part 过滤和验证
+title: PHP 过滤和验证
 layout: post
 ---
 
@@ -56,9 +56,20 @@ layout: post
 
 不要提前过滤
 
-magic_quotes() 之殇
+`magic_quotes()` 之殇
 
 html_special_chars()
 
 $pdo->prepare();
 
+在属性中的如何过滤?
+
+---
+
+专辑:
+
+- [PHP 错误处理](/2014/12/03/PHP-error.html)
+- [PHP 数组](/2014/12/25/PHP-array.html)
+- [PHP 语法糖, 闭包和反射](/2014/12/26/PHP-sugar.html)
+- [PHP 过滤和验证](/2014/12/27/PHP-filter.html)
+- [PHP 类, 邪恶的继承](/2014/12/29/PHP-class.html)
