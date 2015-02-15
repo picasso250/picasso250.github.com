@@ -341,27 +341,27 @@ C++老手会发现 `user()` 还是罗嗦易错的, 下面的会更好一些:
 
 考虑一个简单的例子. 如果你想降序排序一些浮点数, 你可以直接写一段代码. 然而, 除非有特殊需求(比如内存中装不下这些浮点数), 那么再写一遍代码真的是太天真了. 古老的代码已经被写就, 性能还可以的啦. 我最不喜欢的就是C标准库的 `qsort()`:
 
-  int greater(const void* p, const void* q)  // three-way compare
-  {
-    double x = *(double*)p;  // get the double value stored at the address p
-    double y = *(double*)q;
-    if (x>y) return 1;
-    if (x<y) return -1;
-    return 0;
-  }
+    int greater(const void* p, const void* q)  // three-way compare
+    {
+      double x = *(double*)p;  // get the double value stored at the address p
+      double y = *(double*)q;
+      if (x>y) return 1;
+      if (x<y) return -1;
+      return 0;
+    }
 
-  void do_my_sort(double* p, unsigned int n)
-  {
-    qsort(p,n,sizeof(*p),greater);
-  }
+    void do_my_sort(double* p, unsigned int n)
+    {
+      qsort(p,n,sizeof(*p),greater);
+    }
 
-  int main()
-  {
-    double a[500000];
-    // ... fill a ...
-    do_my_sort(a,sizeof(a)/sizeof(*a));  // pass pointer and number of elements
-    // ...
-  }
+    int main()
+    {
+      double a[500000];
+      // ... fill a ...
+      do_my_sort(a,sizeof(a)/sizeof(*a));  // pass pointer and number of elements
+      // ...
+    }
 
 如果你不是一个C程序员或者你最近没用过`qsort`, 可能需要一些解释; `qsort` 需要4个参数
 
@@ -375,5 +375,86 @@ C++老手会发现 `user()` 还是罗嗦易错的, 下面的会更好一些:
 如果你去看看一个工业级的 `qsort`的实现(一定要去看), 你会发现为了补偿信息缺失, 库函数的作者们真的很努力. 比如说, 交换两个元素的通用算法和交换两个`double`的复杂度不可同日而语, 效率也大大降低. 比较函数的开销也只能在编译器对函数指针做了常量增值之后消失.
 
 ### 五,二 `C++` 的 sort()
+
+比较C++的相同功能的函数 `sort()`:
+
+    void do_my_sort(vector<double>& v)
+    {
+      sort(v,[](double x, double y) { return x>y; });  // sort v in decreasing order
+    }
+     
+    int main()
+    {
+      vector<double> vd;
+      // ... fill vd ...
+      do_my_sort(v);
+      // ...
+    }
+
+这段代码就更加不言自明. `vector`知道自己的尺寸, 所以, 没要必要明说元素的个数. 我们从未丢失过 元素的类型, 也就不需要处理元素的尺寸. 默认情况下, `sort()` 使用升序排列, 所以 我必须指定排序方式, 就如同我在 `qsort()`中做的那样. 这里, 我使用一个 lambda, 它使用 `>` 比较两个 double. 就我所知, 所有的C++编译器都会在这里内联这个函数, 所以也就是一个大于比较的机器指令, 不再需要低效的函数调用.
+
+我使用了一个容器版本的 `sort()` 可以不必显示指定迭代器. 也就是说, 我不要这样:
+
+    std::sort(v.begin(),v.end(),[](double x, double y) { return x>y; });
+
+而要这样:
+
+    sort(v,greater<>()); // sort v in decreasing order
+
+那个版本更快? 你可以将 `qsort()` 作为c或者c++编译一下, 你会发现没有性能差别, 所以, 这是编程风格的比较, 不是 编程语言的比较. `sort`和`qsort`的实现算法似乎总是一样的, 所以, 这是编程风格的比较, 不是算法的比较. 不同的编译器和不同的库, 给出的结果当然不一样, 但是总是一个合理的反应.
+
+我最近运行了例子, 发现 `sort()` 版本的速度是 `qsort()`版本的2.5倍. 具体数值可能因编译器而异, 但我从未见过 `qsort()` 打败了 `sort()`. 我曾经见过 `sort()` 比 `qsort()` 快10倍的. 怎么会这样? C++标准库的 `sort` 明显更高层, 更通用, 更柔软. 它是类型安全的, 可以对存储类型, 元素类型 和 排序方法偏特化. 没有指针, 强制类型转换, 和byte. C++标准库真的很努力, 没有丢失什么信息. 使得内联和优化非常方便.
+
+通用且高层的代码可以打败底层代码. 当然, 这并不总是对的, 但 `sort`/`qsort`的比较不是孤例. 开始解决问题是总是首选高层, 精确, 类型安全的版本. (只有在)必要时才优化.
+
+# 迷思五 C++ 只能搞大项目
+
+C++博大精深. 它的定义和C# Java 非常相像. 但这并不意味着你必须知道所有的细节, 或者在每个项目中都使用所有的特性. 考虑一个只使用标准库的基础的组件的程序:
+
+    set<string> get_addresses(istream& is)
+    {
+      set<string> addr;
+      regex pat { R"((\w+([.-]\w+)*)@(\w+([.-]\w+)*))"}; // email address pattern
+      smatch m;
+      for (string s; getline(is,s); )                    // read a line
+        if (regex_search(s, m, pat))                     // look for the pattern
+          addr.insert(m[0]);                             // save address in set
+      return addr;
+    }
+
+在此, 我假设你了解正则表达式. 如果你不了解, 劝你现在学一下. 注意我使用了移动语义来简洁而高效的返回可能很大的数据. 所有的标准库容器都支持移动语义, 所有, 不用再关心new了.
+
+为了让这个正常运行, 我们需要包含合适的标准库组件.
+
+    #include<string>
+    #include<set>
+    #include<iostream>
+    #include<sstream>
+    #include<regex>
+    using namespace std;
+
+让我们来做测试:
+
+    istringstream test {  // a stream initialized to a sting containing some addresses
+      "asasasa\n"
+      "bs@foo.com\n"
+      "ms@foo.bar.com$aaa\n"
+      "ms@foo.bar.com aaa\n"
+      "asdf bs.ms@x\n"
+      "$$bs.ms@x$$goo\n"
+      "cft foo-bar.ff@ss-tt.vv@yy asas"
+      "qwert\n"
+    };
+     
+    int main()
+    {
+      auto addr = get_addresses(test);  // get the email addresses
+      for (auto& s : addr)              // write out the addresses
+        cout << s << '\n';
+    }
+
+这只是一个例子, 很容易就可以修改 `get_addresses()` 让它接受 `regex` 正则表达式作为参数, 这样就可以寻找 URL或者其他什么东西了. 很容易修改 `get_addresses()` 让它辨认某个模式在一行中更多出现的更多次数. 毕竟, C++是为了柔性和通用性设计的, 不是所有的程序必须成为一个完整的库或者框架. 然而, 我要指出的重点是一个简单的任务, 如在输入流中抽取email地址是非常容易被表达和测试的.
+
+## 五.1 库
 
 
