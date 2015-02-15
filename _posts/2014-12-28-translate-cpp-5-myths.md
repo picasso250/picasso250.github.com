@@ -457,4 +457,98 @@ C++博大精深. 它的定义和C# Java 非常相像. 但这并不意味着你�
 
 ## 五.1 库
 
+在任何语言中, 只是用语言的内建特征写程序会是一件非常冗长的事情. 按照惯例, 给出合适的库, 比如图形库, 数据库库, 可以用合理的成本写出实干的程序.
 
+ISO C++标准库相对而言很小(和一些商业库比), 但是颇有一些开源或者商业的库可以用. 比如, Boost, POCO, AMP, TBB, Cinder, vxWidgets和CGAL. 许多通用或者特殊的工作可以变得简单. 我来举个例子. 让我们修改上面的程序变成从网页读取URL的程序. 首先, 我们应该通用化 `get_address()` 来寻找任何string匹配模式的:
+
+set<string> get_strings(istream& is, regex pat)
+{
+  set<string> res;
+  smatch m;
+  for (string s; getline(is,s); )  // read a line
+  if (regex_search(s, m, pat))
+    res.insert(m[0]);              // save match in set
+  return res;
+}
+
+这只是一个简化, 现在, 我们得指出如何读取一个网络上的文件. Boost 有一个库, `asio`, 可以和网络交互.
+
+#include “boost/asio.hpp” // get boost.asio
+
+和网络服务器交互有点复杂:
+
+int main()
+try {
+  string server = "www.stroustrup.com";
+  boost::asio::ip::tcp::iostream s {server,"http"};  // make a connection
+  connect_to_file(s,server,"C++.html");    // check and open file
+ 
+  regex pat {R"((http://)?www([./#\+-]\w*)+)"}; // URL
+  for (auto x : get_strings(s,pat))    // look for URLs
+    cout << x << '\n';
+}
+catch (std::exception& e) {
+  std::cout << "Exception: " << e.what() << "\n";
+  return 1;
+}
+
+看看 `www.stroustrup.com` 的文件 `C++.html`, 这个有:
+
+http://www-h.eng.cam.ac.uk/help/tpl/languages/C++.html
+http://www.accu.org
+http://www.artima.co/cppsource
+http://www.boost.org
+...
+
+我使用了set, 所以, URL是按照字典序的.
+
+我偷摸的, 但并非不切实际的将HTTP连接的细节隐藏在一个函数(`connect_to_file()`)中.
+
+void connect_to_file(iostream& s, const string& server, const string& file)
+  // open a connection to server and open an attach file to s
+  // skip headers
+{
+  if (!s)
+    throw runtime_error{"can't connect\n"};
+ 
+  // Request to read the file from the server:
+  s << "GET " << "http://"+server+"/"+file << " HTTP/1.0\r\n";
+  s << "Host: " << server << "\r\n";
+  s << "Accept: */*\r\n";
+  s << "Connection: close\r\n\r\n";
+ 
+  // Check that the response is OK:
+  string http_version;
+  unsigned int status_code;
+  s >> http_version >> status_code;
+ 
+  string status_message;
+  getline(s,status_message);
+  if (!s || http_version.substr(0, 5) != "HTTP/")
+    throw runtime_error{ "Invalid response\n" };
+ 
+  if (status_code!=200)
+    throw runtime_error{ "Response returned with status code" };
+ 
+  // Discard the response headers, which are terminated by a blank line:
+  string header;
+  while (getline(s,header) && header!="\r")
+    ;
+}
+
+如同普通人做的那样, 我并不是从无到有的建立了一个程序.
+
+## 5.2 你好, 世界!
+
+C++是一门编译型语言, 其主要设计目的是为了发布好的, 可维护的代码, 同时不失性能和可靠性. 它不是为了直接和解释型语言或者最小化编译的脚本语言的小程序竞争的. 确实, 这些语言 如 JavaScript 或者 Java 经常用C++实现. 然而, 有很多有用的C++程序只不过几百行.
+
+C++库作者们可以在这一点上帮助我们. 希望他们不只是聚焦于写出更聪明或者更高级的库, 也提供一个易于尝试的 "Hello, World" 例子. 提供一个细致的安装指南, 以及一个最多一页的 "Hello, World" 例子展示一下你的库可以做什么. 有时, 我们都是初学者. (译者: 吐槽一下, C++社区总是以为自己更聪明, 多学学人家ruby社区. 就算是天才聚集的haskell社区也没这么不友好. 亲爹还是看到了这一点的.) 顺便一提, 我的C++版的"Hello, World"是:
+
+#include<iostream>
+ 
+int main()
+{
+  std::cout << "Hello, World\n";
+}
+
+我发现代码越长, 展示时那种震惊的美妙感觉反而越少. 这就是我对ISO C++和它的标准库的一个勾勒.
