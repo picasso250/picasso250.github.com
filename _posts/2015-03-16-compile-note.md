@@ -108,4 +108,44 @@ if 悬空
 
     9-(5+2)
 
+注释(annotated)语法分析树 (这个就不需要讲了)
+
+树的遍历
+
+深度优先遍历
+
+前序遍历
+后序遍历
+
+语义动作
+
+    {print v}
+
+为一个语义动作创建一个额外的叶子节点
+
+语法分析
+
+自顶向下
+
+递归下降分析法
+
+预测分析法
+
+    void stmt() {
+        switch (lookahead) {
+            case if:
+            match(if); match('('); match(expr); match(')'); stmt();
+            break;
+            case for:
+            match(for); match('('); optexpr(); match(';'); optexpr(); match(';'); optexpr(); match(')');stmt();
+            break;
+        }
+    }
+    void optexpr() {
+        if (lookahead == expr) match(expr);
+    }
+    void match(terminal t) {
+        if (lookahead == t) lookahead = nextTerminal;
+        else report("syntax error");
+    }
 
