@@ -3,6 +3,8 @@ title: 龙书笔记
 layout: post
 ---
 
+### 第一章
+
 编译器的结构：
 
 1. 词法分析
@@ -149,3 +151,8 @@ if 悬空
         else report("syntax error");
     }
 
+习题在此：
+
+http://picasso250.github.io/2015/02/26/compile.html
+
+做了一个[json-parser](https://github.com/picasso250/py3-json-parser/)（不能处理unicode）
