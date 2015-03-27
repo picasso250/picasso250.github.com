@@ -456,3 +456,37 @@ case 表达式的形式如下：
         where what [] = "empty."  
               what [x] = "a singleton list."  
               what xs = "a longer list."  
+
+#递归
+
+有递归，有可枚举类型，基本上这个语言就图灵完全了。
+
+还是拿斐波那契数列举个例子，F(0) = 0, F(1)=1, F(n) = F(n-1)+F(n-2)
+这个句子完整的定义了一个数列。
+其中，F(0) = 0, F(1)=1被称为边界条件(edge condition)。
+
+##最大化
+
+想象一下如何用递归实现maximum。
+
+如果列表的第一个元素是最大的元素，就返回之，如果不是，就返回除去头部的这个列表的最大元素。
+
+边界条件要考虑到。
+
+    maximum' :: (Ord a) => [a] -> a  
+    maximum' [] = error "maximum of empty list"  
+    maximum' [x] = x  
+    maximum' (x:xs)   
+        | x > maxTail = x  
+        | otherwise = maxTail  
+        where maxTail = maximum' xs  
+
+模式匹配和递归配合的天衣无缝，好多命令式的语言没有模式匹配，所以就只能用if else判断。
+
+好了，我们再来一个函数replicate，replicate接受两个参数，个数和元素，复制出一个列表。
+
+    replicate' :: (Num i, Ord i) => i -> a -> [a]  
+    replicate' 0 x  = []
+    replicate' n x  = x:replicate' (n-1) x  
+
+注意优先级，`:`这种运算符的优先级总是落后于函数调用的。
