@@ -1,5 +1,5 @@
 ---
-title: haskell笔记,又叫 一小时学haskell
+title: haskell笔记,又名一小时学haskell
 layout: post
 ---
 
