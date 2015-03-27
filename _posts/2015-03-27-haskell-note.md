@@ -278,7 +278,7 @@ a怎么可以知道呢？可以人工指定（太流氓了），大家注意学�
     lucky 7 = "LUCKY NUMBER SEVEN!"  
     lucky x = "Sorry, you're out of luck, pal!"   
 
-上面的代码应该是自解释的，如果你给7，就luck，否则就打脸。你可能会想执行顺序是从上到下的，默认break,嗯，你可以这么理解。
+上面的代码的意思是匹配给`lucky`的参数，如果你给7，就lucky，否则就打脸。你可能会想执行顺序是从上到下的，默认break,嗯，你可以这么理解。
 
 接下来就是所有的函数式编程教材都要提到的函数：阶乘
 
@@ -288,3 +288,171 @@ a怎么可以知道呢？可以人工指定（太流氓了），大家注意学�
 
 如果match不到，就报错。
 
+接下来就是最powerful的地方了。
+
+    addVectors :: (Num a) => (a, a) -> (a, a) -> (a, a)  
+    addVectors (x1, y1) (x2, y2) = (x1 + x2, y1 + y2)  
+
+上面的函数是两个变量的相加。
+
+简直和写数学公式一样简洁。
+
+列表推导的时候也可以匹配模式。
+
+    ghci> let xs = [(1,3), (4,3), (2,4), (5,3), (5,6), (3,1)]  
+    ghci> [a+b | (a,b) <- xs]  
+    [4,7,6,8,11,4]   
+
+如何表达列表
+
+    head' :: [a] -> a  
+    head' [] = error "Can't call head on an empty list, dummy!"  
+    head' (x:_) = x  
+
+看到 `:` 你就明白，x是头部
+
+然后验证一下我们的成果：递归版本的length函数
+
+    length' :: (Num b) => [a] -> b  
+    length' [] = 0  
+    length' (_:xs) = 1 + length' xs  
+
+`@`符号可以表示重复匹配。如`xs@(x:_)`表示后面`(x:_)`的整个列表。
+
+    capital :: String -> String  
+    capital "" = "Empty string, whoops!"  
+    capital all@(x:xs) = "The first letter of " ++ all ++ " is " ++ [x]  
+
+##守卫
+
+守卫大概是这个样子的，在函数名和参数后面添加一个竖线，然后守卫就是那个布尔表达式，能不能通过，就看你符不符合他的标准了。
+
+下面这个函数是BMI体重指数检测。
+
+    bmiTell :: (RealFloat a) => a -> String  
+    bmiTell bmi  
+        | bmi <= 18.5 = "You're underweight, you emo, you!"  
+        | bmi <= 25.0 = "You're supposedly normal. Pffft, I bet you're ugly!"  
+        | bmi <= 30.0 = "You're fat! Lose some weight, fatty!"  
+        | otherwise   = "You're a whale, congratulations!"  
+
+很多时候，最后一个守卫是 otherwise，就是True。
+
+当然，下面是一个更实用的版本。
+
+    bmiTell :: (RealFloat a) => a -> a -> String  
+    bmiTell weight height  
+        | weight / height ^ 2 <= 18.5 = "You're underweight, you emo, you!"  
+        | weight / height ^ 2 <= 25.0 = "You're supposedly normal. Pffft, I bet you're ugly!"  
+        | weight / height ^ 2 <= 30.0 = "You're fat! Lose some weight, fatty!"  
+        | otherwise                 = "You're a whale, congratulations!"  
+
+注意那个表达式 `weight / height ^ 2` 我们重复了3编，haskell逼格如此之高，怎么不会有解决方案呢？
+
+    bmiTell :: (RealFloat a) => a -> a -> String  
+    bmiTell weight height  
+        | bmi <= 18.5 = "You're underweight, you emo, you!"  
+        | bmi <= 25.0 = "You're supposedly normal. Pffft, I bet you're ugly!"  
+        | bmi <= 30.0 = "You're fat! Lose some weight, fatty!"  
+        | otherwise   = "You're a whale, congratulations!"  
+        where bmi = weight / height ^ 2  
+
+当然，魔数也可以去掉
+
+    bmiTell :: (RealFloat a) => a -> a -> String  
+    bmiTell weight height  
+        | bmi <= skinny = "You're underweight, you emo, you!"  
+        | bmi <= normal = "You're supposedly normal. Pffft, I bet you're ugly!"  
+        | bmi <= fat    = "You're fat! Lose some weight, fatty!"  
+        | otherwise     = "You're a whale, congratulations!"  
+        where bmi = weight / height ^ 2  
+              (skinny, normal, fat) = (18.5, 25.0, 30.0)
+
+ps 那些说元组没用的人，你们不知道集合里要有元组才能方便的表达顺序吗？
+
+    initials :: String -> String -> String  
+    initials firstname lastname = [f] ++ ". " ++ [l] ++ "."  
+        where (f:_) = firstname  
+              (l:_) = lastname    
+
+上面的取姓名缩写的函数，自己领会。
+
+where也是可以嵌套的，因为where里面也是可以定义函数的。
+
+    calcBmis :: (RealFloat a) => [(a, a)] -> [a]  
+    calcBmis xs = [bmi w h | (w, h) <- xs]  
+        where bmi weight height = weight / height ^ 2  
+
+##let it be
+
+let和where很像,只是位置不同
+
+    cylinder :: (RealFloat a) => a -> a -> a  
+    cylinder r h = 
+        let sideArea = 2 * pi * r * h  
+            topArea = pi * r ^2  
+        in  sideArea + 2 * topArea  
+
+其形式是`let <bindings> in <expression>`。其中 bindings 中的定义在expression中是可用的。
+
+where和let的区别是let是表达式（因此有值），而where是语法结构。
+
+    4 * (let a = 9 in a + 1) + 2  
+
+let也可以在列表推导中使用，此时，它对输出表达式（|前面的部分），断言和区块都是可见的。
+如下面这个计算所有的胖子的BMI
+
+    calcBmis :: (RealFloat a) => [(a, a)] -> [a]  
+    calcBmis xs = [bmi | (w, h) <- xs, let bmi = w / h ^ 2, bmi >= 25.0]  
+
+在ghci中的let默认是in在整个scope里的
+
+    ghci> let zoot x y z = x * y + z  
+    ghci> zoot 3 9 2  
+    29  
+    ghci> let boot x y z = x * y + z in boot 3 4 2  
+    14  
+    ghci> boot  
+    <interactive>:1:0: Not in scope: `boot'  
+
+let很强大，还要where干什么？因为let不能在守卫(guard)中使用。
+
+# case
+
+c语言中有switch语句，haskell中也有case表达式，如if表达式一样，都是表达式，也都有值。
+
+case实质上就是在做模式匹配。
+
+    head' :: [a] -> a  
+    head' [] = error "No head for empty lists!"  
+    head' (x:_) = x  
+
+vs
+
+    head' :: [a] -> a  
+    head' xs = case xs of [] -> error "No head for empty lists!"  
+                      (x:_) -> x  
+
+这两种表达实质上是一样的，上面的函数的模式匹配实质上是case表达式的语法糖。
+
+case 表达式的形式如下：
+
+    case expression of pattern -> result  
+                       pattern -> result  
+                       pattern -> result  
+                       ...  
+
+看个例子
+
+    describeList :: [a] -> String  
+    describeList xs = "The list is " ++ case xs of [] -> "empty."  
+                                                   [x] -> "a singleton list."   
+                                                   xs -> "a longer list."  
+
+当然，你可以使用where语句（更直观，语法糖之所以叫语法糖，就是因为更甜）
+
+    describeList :: [a] -> String  
+    describeList xs = "The list is " ++ what xs  
+        where what [] = "empty."  
+              what [x] = "a singleton list."  
+              what xs = "a longer list."  
