@@ -12,9 +12,10 @@ layout: post
 
 `:l myfunctions` 可以加载 `myfunctions.hs` 文件。
 
-haskell最重要的两点特性
+haskell最重要的三点特性
 
 1. 纯函数, 所以烧脑
+3. 静态类型, 强类型, 所以烧脑
 2. 懒求值
 
 #出发
@@ -59,7 +60,7 @@ if else 是个表达式，也有值
 
     [1,2,3,4] ++ [9,10,11,12]
 
-字符串就是字符的列表，因为常用，所以有语法糖。
+字符串就是字符的列表，因为常用，所以有语法糖。单引号表示 `Char`, 双引号表示字符串,`[Char]`
 
     ['w','o'] ++ " cao"
 
@@ -179,5 +180,92 @@ haskell中这样表示
 
 你看, haskell表达能力爆表.
 
-#
+# 类型
 
+haskell是静态类型, 强类型.
+
+我知道你烦Java, 所幸haskell还提供了 **类型推断**.
+
+在ghci 中 `:t` 可以看变量的类型。
+
+    ghci> :t 'a'
+    'a' :: Char
+    ghci> :t "HELLO!"
+    "HELLO!" :: [Char]
+    ghci> :t (True, 'a')
+    (True, 'a') :: (Bool, Char)
+
+注意看，haskell是怎样表示列表和元组类型的。
+
+你可以声明一个函数的类型。这是个很好的习惯。除非函数太短。
+
+    removeNonUppercase :: [Char] -> [Char]
+    removeNonUppercase st = [ c | c <- st, c `elem` ['A'..'Z']] 
+
+多参函数的类型
+
+    addThree :: Int -> Int -> Int -> Int
+    addThree x y z = x + y + z
+
+你可能会想为什么不是 `addTree :: (Int, Int, Int) -> Int`
+如果你学过一点lambda演算。你应该猜到，这是curry
+
+下面说一下类型
+
+- `Int`
+- `Integer` 大整数(真的很大哦,和python一个尿性,但是性能略低)
+- `Float`
+- `Double`
+- `Bool`
+- `Char`
+
+## 类型变量
+
+类型也可以是个变量.
+
+`head` 的类型是 `head :: [a] -> a` 注意其中的a, 这就是类型变量. 和C++的模板类型一个意思.
+
+Typeclass （或许可以翻译成型类） 是一个规范, 和Java中的接口概念类似。
+
+    elem :: Eq a => a -> [a] -> Bool
+
+`Eq`就是一个型类，意思就是可进行相等比较的(Eqauable).
+
+`(>) :: (Ord a) => a -> a -> Bool` `Ord` 可比较大小的。
+
+`Show` 可以被显示的，所有的变量都可以。ps，下面的 `show` 是个函数。
+
+    show 3
+
+`Read` 可以从终端读入的。
+
+    read :: (Read a) => String -> a
+
+a怎么可以知道呢？可以人工指定（太流氓了），大家注意学习制定类型的办法，虽然在函数定义时你学习过了。
+
+    read "5" :: Int
+
+`Enum` 可枚举的。这个型类就是下面的代码可以工作的原因。
+
+    ['a'..'e']
+
+`Bounded` 有界的。
+
+    minBound :: Int
+
+`Num` 数字。 说到这里就得说下haskell变态的地方了，所有的数字都是多态的（ruby表示很轻松）
+
+    ghci> 20 :: Int
+    20
+    ghci> 20 :: Integer
+    20
+
+`Integral` 是 `Int` 和 `Integer` 的合集。
+
+`Floating` 是 `Double` 和 `Float` 的合集。
+
+说到合集，上面的表述是严谨的，仅当我们承认选择公理。
+
+说一个有意思的函数， `fromIntegral` 和PHP中的`intval()`差不多，将数字转化成整数。
+
+    fromIntegral :: (Num b, Integral a) => a -> b
