@@ -1,5 +1,5 @@
 ---
-title: Learn You a Haskell for Great Good 笔记, 又名一小时学haskell
+title: Learn You a Haskell for Great Good 笔记 第二弹 未完待续
 layout: post
 ---
 
@@ -61,7 +61,7 @@ layout: post
 
 接下来我们要实现
 
-zipWith' :: (a -> b -> c) -> [a] -> [b] -> [c]  
-zipWith' _ [] _ = []  
-zipWith' _ _ [] = []  
-zipWith' f (x:xs) (y:ys) = f x y : zipWith' f xs ys  
+    zipWith' :: (a -> b -> c) -> [a] -> [b] -> [c]  
+    zipWith' _ [] _ = []  
+    zipWith' _ _ [] = []  
+    zipWith' f (x:xs) (y:ys) = f x y : zipWith' f xs ys  
