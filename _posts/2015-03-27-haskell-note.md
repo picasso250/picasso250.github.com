@@ -9,6 +9,7 @@ layout: post
 [Learn You a Haskell for Great Good!](http://learnyouahaskell.com/chapters)
 的笔记。如果觉得我写的不清楚，就去看原书。
 
+我默认你懂的一些C系语言，也懂一些 lambda 演算的基础知识。
 
 初学 Haskell 就用 [Haskell Platform](https://www.haskell.org/platform/)
 省心。
