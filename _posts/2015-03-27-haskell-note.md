@@ -1,9 +1,9 @@
 ---
-title: haskell笔记,又名一小时学haskell
+title: Learn You a Haskell for Great Good 笔记, 又名一小时学haskell
 layout: post
 ---
 
-#简介
+# 简介
 
 初学Haskell就用 [Haskell Platform](https://www.haskell.org/platform/)
 省心。
@@ -18,7 +18,7 @@ haskell最重要的三点特性
 3. 静态类型, 强类型, 所以烧脑
 2. 懒求值
 
-#出发
+# 出发
 
 `!=` 在haskell中是 `\=`
 
@@ -180,7 +180,7 @@ haskell中这样表示
 
 你看, haskell表达能力爆表.
 
-# 类型
+# 类型和型类
 
 haskell是静态类型, 强类型.
 
@@ -325,7 +325,7 @@ a怎么可以知道呢？可以人工指定（太流氓了），大家注意学�
 
 ##守卫
 
-守卫大概是这个样子的，在函数名和参数后面添加一个竖线，然后守卫就是那个布尔表达式，能不能通过，就看你符不符合他的标准了。
+守卫(Guard, 我觉得翻译成 **关隘** 更合理）大概是这个样子的，在函数名和参数后面添加一个竖线，然后守卫就是那个布尔表达式，能不能通过，就看你符不符合他的标准了。
 
 下面这个函数是BMI体重指数检测。
 
@@ -368,7 +368,9 @@ a怎么可以知道呢？可以人工指定（太流氓了），大家注意学�
         where bmi = weight / height ^ 2  
               (skinny, normal, fat) = (18.5, 25.0, 30.0)
 
-ps 那些说元组没用的人，你们不知道集合里要有元组才能方便的表达顺序吗？
+ps 如果where后面有多个赋值，一定要排版对其啊，坑！
+
+pps 那些说元组没用的人，你们不知道集合里要有元组才能方便的表达顺序吗？
 
     initials :: String -> String -> String  
     initials firstname lastname = [f] ++ ". " ++ [l] ++ "."  
@@ -483,10 +485,71 @@ case 表达式的形式如下：
 
 模式匹配和递归配合的天衣无缝，好多命令式的语言没有模式匹配，所以就只能用if else判断。
 
+##再来一些递归
+
 好了，我们再来一个函数replicate，replicate接受两个参数，个数和元素，复制出一个列表。
 
     replicate' :: (Num i, Ord i) => i -> a -> [a]  
     replicate' 0 x  = []
     replicate' n x  = x:replicate' (n-1) x  
 
-注意优先级，`:`这种运算符的优先级总是落后于函数调用的。
+注意优先级，`:` 这种运算符的优先级总是落后于函数调用的。
+
+再次注意，`Num` 不是 `Ord` 的子集，不是所有的数字都是可排序的（真严谨，不过也真无语）。
+
+然后我们来实现take，take接受两个参数，第一个参数是数字，第二个参数是列表，从列表中提取前N个元素。
+
+    take' :: (Num i, Ord i) => i -> [a] -> [a]  
+    take' n _  
+        | n <= 0   = []  
+    take' _ []     = []  
+    take' n (x:xs) = x : take' (n-1) xs  
+
+reverse 会倒排一个数组。
+
+    reverse' :: [a] -> [a]  
+    reverse' [] = []  
+    reverse' (x:xs) = reverse' xs ++ [x]  
+
+haskell 支持无穷递归，无穷递归的后果就是一直重复某个动作，或者形成某种无穷的数据结构，比如无限列表。当然，我们会可以在某个合适的地方截断它们。
+
+repeat 重复某个元素，形成一个列表。
+
+    repeat' :: a -> [a]  
+    repeat' x = x:repeat' x 
+
+zip接受两个列表作为参数，将对应元素拼成一个二元组。
+因为较长的列表的后面会被忽略，所以：
+
+    zip' :: [a] -> [b] -> [(a,b)]  
+    zip' _ [] = []  
+    zip' [] _ = []  
+    zip' (x:xs) (y:ys) = (x,y) : zip' xs ys  
+
+elem，查看一个元素是否在列表中。
+
+    elem' :: (Eq a) => a -> [a] -> Bool  
+    elem' a [] = False  
+    elem' a (x:xs)  
+        | a == x    = True  
+        | otherwise = a `elem'` xs   
+
+##快速排序
+
+快排这个名字起的真霸气，暗示其他排序方法都是慢的。
+
+    quicksort :: (Ord a) => [a] -> [a]
+    quicksort [] = []
+    quicksort (x:xs) = smaller ++ [x] ++ bigger
+            where smaller = quicksort [ a | a <- xs, a <= x]
+                  bigger = quicksort [ a | a <- xs, a > x]
+
+我们来实验一下效果：
+
+    quicksort "the quick brown fox jumps over the lazy dog"  
+
+ps 上面的狐狸跳过一条懒狗是一条检查打印机的著名的句子，包含了所有字母。
+
+##递归的思维方式
+
+哎呀，我天生就是递归的思维方式，以上。
