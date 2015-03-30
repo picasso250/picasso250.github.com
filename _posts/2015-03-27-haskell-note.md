@@ -5,7 +5,12 @@ layout: post
 
 # 简介
 
-初学Haskell就用 [Haskell Platform](https://www.haskell.org/platform/)
+这是此书
+[Learn You a Haskell for Great Good!](http://learnyouahaskell.com/chapters)
+的笔记。如果觉得我写的不清楚，就去看原书。
+
+
+初学 Haskell 就用 [Haskell Platform](https://www.haskell.org/platform/)
 省心。
 
 `ghci` 可以打开交互模式。
@@ -553,3 +558,9 @@ ps 上面的狐狸跳过一条懒狗是一条检查打印机的著名的句子�
 ##递归的思维方式
 
 哎呀，我天生就是递归的思维方式，以上。
+
+# 总结
+
+你看到这里一定花了不止一个小时，但是你要知道，一个小时学成haskell是不可能的，学C++还要21天呢。
+
+但是你现在学习了大概三分之一了，还有两个小时就学完了，听上去好期待呀。
