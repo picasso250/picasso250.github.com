@@ -1,5 +1,5 @@
 ---
-title: 重新发明Y组合子
+title: 重新发明Y组合子 Python版
 layout: post
 ---
 
