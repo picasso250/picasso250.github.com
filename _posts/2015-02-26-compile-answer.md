@@ -1,5 +1,5 @@
 ---
-title: 龙书习题
+title: 龙书习题 第二章
 layout: post
 ---
 
@@ -251,4 +251,34 @@ expr -> 9                | expr.t = '9'
     void match(char c) {
         if (c == lookahead) lookahead = nextTerminal;
         else report("syntax error");
+    }
+
+**练习 2.6.1**
+扩展2.6.5 节中的词法分析器以消除注释。注释的定义如下：
+
+1. 以 `//` 开始的注释，包括从它开始到这一行的结尾的所有字符
+2. 以 `/*` 开始的注释，包括从它到后面第一次出现的字符序列 `*/` 之间的所有字符
+
+    for ( ; ; lookahead = peek, peek = next input character) {
+        if ( peek is a blank or a tab ) do nothing;
+        else if ( peek is a new line ) line = line + 1;
+        else if (lookahead == '/') {
+            if (peek == '/') {
+                for ( ; ; lookahead = peek, peek = next input character) {
+                    if (peek is a new line) {
+                        line = line + 1;
+                        break;
+                    }
+                }
+            } else if (peek == '*') {
+                for ( ; ; lookahead = peek, peek = next input character) {
+                    if ( peek is a new line ) line = line + 1;
+                    else if ( lookahead == '*' && peek == '/') {
+                        peek = next input character;
+                        break;
+                    }
+                }
+            }
+        }
+        else break;
     }
