@@ -10,7 +10,7 @@ Get-ChildItem Env:os
 
 $Env:os = "hello"
 
-问题是 `getenv()` 依然不管用啊?
+PHP `getenv()` 因此可用
 
 ---
 
@@ -21,3 +21,5 @@ Run the app (on MacOS or Linux):
 On Windows, use this command:
 
     > set DEBUG=myapp & node .\bin\www
+
+    set foo=bbb & php -r "echo getenv('foo');"
