@@ -5,7 +5,7 @@ layout: post
 
 [图灵机](http://zh.wikipedia.org/wiki/%E5%9B%BE%E7%81%B5%E6%9C%BA)
 
-[图灵机视频](http://www.tudou.com/programs/view/opyDBHcgRhQ)
+[图灵机视频](http://v.youku.com/v_show/id_XMzE5MTU0Mjcy.html?from=s1.8-1-1.2)
 
 数字的表示方法：
 
