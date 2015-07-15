@@ -1,11 +1,11 @@
 ---
-title: Learn You a Haskell for Great Good 笔记 第二弹 未完待续
+title: Learn You a Haskell for Great Good 笔记 第二弹
 layout: post
 ---
 
 # 高阶函数
 
-把函数作为函数，或者把函数作为返回值的函数，称之为高阶函数。
+将函数作为参数、或将函数作为返回值的函数，称之为高阶函数。
 
 ## 柯里化
 
@@ -13,7 +13,7 @@ layout: post
 
 那么，多参函数是怎么实现的呢？
 
-假设在javascript中，函数都只有一个参数，那么我们如何实现一个有加法功能的（带有两个参数的）函数呢？
+假设在 JavaScript 中，函数都只有一个参数，那么我们如何实现一个有加法功能的（带有两个参数的）函数呢？
 
     function add(x) {
         return function (y) {
@@ -36,7 +36,7 @@ layout: post
 当我们调用 `multThree 3 5 9`时发生了什么？
 是 `((multThree 3) 5) 9`，对吗？
 
-确保你理解了柯里化，因为据说它很重要。下面是个测验
+请确保你理解了柯里化，因为它很重要。下面是个测验
 
     divideByTen :: (Floating a) => a -> a  
     divideByTen = (/10)  
@@ -214,4 +214,177 @@ lambda中也可以做模式匹配
 
 ## 折叠
 
-前面，我们看到了好多 `x:xs` 这种形式，就要有函数来封装之。我们称之为折叠。和map不同，这个函数
+前面，我们看到了好多 `x:xs` 这种形式，要有函数来封装之。我们称之为折叠。和map不同，这个函数会将列表收敛成单值。
+
+折叠函数需要一个二元函数，一个起始值（称之为累元），还有一个列表。
+二元函数用在累元和第一个（或最后一个）元素上，产生一个新的累元。然后，二元函数用在新的累元和新的第一个（或最后一个）元素上，直到列表为空。
+累元的值就是结果。
+
+首先来看看 `foldl`, 左折叠。从左边开始折叠。
+
+用foldl实现sum
+
+    sum' :: (Num a) =>[a] -> a
+    sum' xs = foldl (+) 0 xs
+
+更易读的：
+
+    sum' xs = foldl (\acc x -> acc + x) 0 xs
+
+大家会发现xs在定义式的两边都有，所以
+
+    sum' = foldl (+) 0
+
+我可以说，这个比较接近sum的本质。也可以说，这是sum的另一种表达方式。
+
+一般的，如果你有一个函数 `foo a = bar b a`, 因柯里化，你就可以重写为 `foo = bar b`
+
+然后再用foldl实现elem（elem出镜率很高呀）
+
+    elem' :: (Eq a) => a -> [a] -> Bool
+    elem' x xs = foldl (\acc y -> if x == y then True else acc) False xs
+
+foldr 右折叠，从右开始折叠。
+它的第一个参数（二元函数）是第一个参数是当前值，第二个参数是累元，也就是 
+`\x acc -> ...`
+
+累元可以是任何类型，可能是数字，布尔值，甚至是一个list。
+让我们来用foldr实现map吧。
+
+    map' f xs = foldr (\x acc -> f x : acc) [] xs
+
+有时foldl和foldr没有什么区别，比如用来实现sum时。还是有区别的，foldr可以用来折叠无穷列表。从某个点开始，向左折叠，总会到达头部。
+
+如果你想遍历一个列表一次，就是fold显身手的时候。
+
+foldl1 and foldr1 很像 foldl and foldr，但是你不必提供一个起始值。他们会自动将第一个值作为起始值。
+
+sum可以这样实现 `sum = foldl1 (+)`
+当时当空列表时，就会出问题。
+
+来来来，做做练习
+
+    maximum' :: (Ord a) => [a] -> a
+    maximum' = foldl1 (\x y -> if x > y then x else y) 0
+
+    reverse' :: [a] -> [a]
+    reverse' = foldl (\acc x -> x : acc) []
+
+    product' :: (Num a) => [a] -> a
+    product' = foldl (*) 1
+
+    filter' p :: (a -> Bool) -> [a] -> [a]
+    filter' p = foldr (\x acc -> if p x then x : acc else acc) []
+
+    head' :: [a] -> a
+    head' = foldr1 (\x _ -> x)
+
+    last' :: [a] -> a
+    last' = foldl1 (\_ x -> x)
+
+在reverse的实现中，我们的 `\acc x -> x : acc` 很像 (:) 也就是 `\x acc -> x : acc`，但是参数是反着的，所以，reverse就是 `foldl (flip (:)) []`
+
+scanl and scanr 和 foldl and foldr 很像，只是每次累元的值都会返回。也有scanl1 and scanr1, 概念上模仿 foldl1 and foldr1.
+
+    ghci> scanl (+) 0 [3,5,2,1]  
+    [0,3,8,10,11]  
+    ghci> scanr (+) 0 [3,5,2,1]  
+    [11,8,3,1,0]  
+    ghci> scanl1 (\acc x -> if x > acc then x else acc) [3,4,5,3,7,9,2,1]  
+    [3,4,5,5,7,9,9,9]  
+    ghci> scanl (flip (:)) [] [3,2,1]  
+    [[],[3],[2,3],[1,2,3]]  
+
+scanl 和 scanr的生成列表的顺序也是相反的
+
+    Prelude> scanr (+) 0 [3,5,2,1]  
+    [11,8,3,1,0]
+
+scan用来监视fold过程发生的事情
+
+让我们来回答一个问题：自然数列的平方根数列之和超过1000后的第一个自然数是多少？
+
+    sqrtSums :: Int  
+    sqrtSums = length (takeWhile (<1000) (scanl1 (+) (map sqrt [1..]))) + 1  
+
+### $ 和函数应用
+
+首先看看$的定义
+
+    ($) :: (a -> b) -> a -> b  
+    f $ x = f x  
+
+你不禁要问：有什么用呢？
+
+函数应用的优先级最高，但是$的优先级最低。
+
+函数调用是左结合的，但是$是右结合的。
+
+这样一来，就可以省很多括号。
+
+考虑一下 `sum (map sqrt [1..130])`. 因为$的优先级最低，等价于 `sum $ map sqrt [1..130]`, 这样就省下了很多心智负担。
+
+再来看看 `sqrt (3 + 4 + 9)` 等价于 `sqrt $ 3 + 4 + 9`
+
+再看看 `sum (filter (> 10) (map (*2) [2..10]))`，等价于
+`sum $ filter (> 10) $ map (*2) [2..10]`
+
+从这一点来看， $ 像是逆向的管道。
+
+除了消灭括号之外，$意味着函数调用本身就可以被当作一个函数。
+
+    ghci> map ($ 3) [(4+), (10*), (^2), sqrt]  
+    [7.0,30.0,9.0,1.7320508075688772]
+
+### 函数复合
+
+在数学中，函数复合就像 $(f \circ g)(x)=f(g(x))$
+haskell中也有啦，就是.运算符
+
+    (.) :: (b -> c) -> (a -> b) -> a -> c  
+    f . g = \x -> f (g x)  
+
+比如我们有
+
+    map (\x -> negate (abs x)) [5,-3,-6,7,-3,2,-19,24]
+
+那么，就可以写成
+
+    map (negate . abs) [5,-3,-6,7,-3,2,-19,24]
+
+函数复合是右结合的。我们可以同时复合多个函数，如
+`(f . g . h) x` 就是 `f (g (h x))`
+
+没有重点的风格：如果一个定义左右两边省掉了参数，就是无重点风格。
+比如：
+
+    sum' xs = foldl (+) 0 xs 
+
+左右两边都有 xs，去掉之后
+
+    sum' = foldl (+) 0
+
+那么这个怎么变成 无重点风格？
+
+    fn x = ceiling (negate (tan (cos (max 50 x))))
+
+只要使用 复合符 就可以了
+
+    fn = ceiling . negate . tan . cos . max 50
+
+excited，很多情况下，无重点风格的函数更加直观，精确。因为它让你更关注函数的构成，而不是数据的流动。但当函数太复杂之后，这样做反而会增加阅读难度。
+
+之前曾经解决过一个不超过10000的奇数的和的问题。
+
+    oddSquareSum = sum (takeWhile (<10000) (filter odd (map (^2) [1..])))
+
+可以等价成
+
+    oddSquareSum = (sum . takeWhile (<10000) . filter odd . map (^2)) $ [1..]
+
+当然，人类能读懂的版本在这：
+
+    oddSquareSum =   
+        let oddSquares = filter odd $ map (^2) [1..]  
+            belowLimit = takeWhile (<10000) oddSquares  
+        in  sum belowLimit  
