@@ -259,6 +259,8 @@ expr -> 9                | expr.t = '9'
 1. 以 `//` 开始的注释，包括从它开始到这一行的结尾的所有字符
 2. 以 `/*` 开始的注释，包括从它到后面第一次出现的字符序列 `*/` 之间的所有字符
 
+---
+
     for ( ; ; lookahead = peek, peek = next input character) {
         if ( peek is a blank or a tab ) do nothing;
         else if ( peek is a new line ) line = line + 1;
@@ -281,4 +283,144 @@ expr -> 9                | expr.t = '9'
             }
         }
         else break;
+    }
+
+**练习 2.6.2**
+
+扩展 2.6.5 节中的词法分析器，使它能够识别关系运算符 <、<=、==、!=、>=、>。
+
+首先需要一个新的类
+
+    package lexer;
+
+    import java.util.Hashtable;
+
+    public class Operator extends Word {
+        private static Hashtable<String, Integer> words = new Hashtable<String, Integer>();
+        static {
+            words.put("<",  Tag.LT);
+            words.put("<=", Tag.LE);
+            words.put("==", Tag.EQ);
+            words.put("!=", Tag.NE);
+            words.put(">=", Tag.GE);
+            words.put(">",  Tag.GT);
+        }
+
+        public Operator(String lexeme) {
+            super(words.get(lexeme), lexeme);
+        }
+
+        @Override
+        public String toString() {
+            return "Operater [" + lexeme + "]";
+        }
+    }
+
+其次需要在 Lexer 类中添加方法
+
+    private boolean isOperatorChar(char peek) {
+        return peek == '<' || peek == '=' || peek == '!' || peek == '>';
+    }
+
+然后就可以添加代码
+
+        if (isOperatorChar(peek)) {
+            StringBuffer b = new StringBuffer();
+            do {
+                b.append(peek);
+                peek = (char)System.in.read();
+            } while (isOperatorChar(peek));
+            
+            String s = b.toString();
+            return new Operator(s);
+        }
+
+**练习 2.6.2**
+
+扩展 2.6.5 节中的词法分析器，使它能够识别浮点数，比如2.、3.14、.5 等。
+
+首先建立两个新类型 Int 和 Float
+
+    package lexer;
+
+    public class Int extends Num {
+        public final int value;
+
+        public Int(String lexeme, int value) {
+            super(Tag.INTEGER, lexeme);
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return "Int [value=" + value + "]";
+        }
+    }
+
+    package lexer;
+
+    public class Float extends Num {
+        public final float value;
+
+        public Float(String lexeme, float value) {
+            super(Tag.FLOAT, lexeme);
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return "Float [value=" + value + "]";
+        }
+        
+    }
+
+然后建立分析数字的方法
+
+    package lexer;
+
+    public class Num extends Word {
+
+        public Num(int tag, String lexeme) {
+            super(tag, lexeme);
+        }
+        public static Num fromString(String lexeme) {
+            int i = 0;
+            float f = 0.0f;
+            int base = 10;
+            boolean after = false;
+            for (char c : lexeme.toCharArray()) {
+                if (after) {
+                    f += Character.digit(c, 10) * 1.0 / base;
+                    base = base * 10;
+                } else {
+                    if (c == '.') {
+                        after = true;
+                        continue;
+                    }
+                    i = 10 * i + Character.digit(c, 10);
+                }
+            }
+            if (after) {
+                return new Float(lexeme, i+f);
+            } else {
+                return new Int(lexeme, i);
+            }
+        }
+
+最后将 Lex 类中 分析数字的代码改掉
+
+        if (isNumChar(peek)) {
+            StringBuffer b = new StringBuffer();
+            do {
+                b.append(peek);
+                peek = (char)System.in.read();
+            } while (isNumChar(peek));
+            String s = b.toString();
+            return Num.fromString(s);
+        }
+
+当然不要忘记这个 helper 函数
+
+    private boolean isNumChar(char peek) {
+        return Character.isDigit(peek) || peek == '.';
     }
