@@ -1,5 +1,5 @@
 ---
-title: c 语言参数解释
+title: C 语言参数解释
 layout: post
 ---
 
