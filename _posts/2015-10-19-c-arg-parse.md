@@ -1,7 +1,7 @@
 ---
 title: c 语言参数解释
 layout: post
-----
+---
 
 最近在看 [C in four functions](https://github.com/rswier/c4)
 它用4个函数（部分）实现了C解释器，其代码非常紧凑，值得一读。
@@ -22,14 +22,33 @@ int
     debug;    // print executed instructions
 int main(int argc, char **argv)
 {
-  int fd, bt, ty, poolsz, *idmain;
-  int *pc, *sp, *bp, a, cycle; // vm registers
-  int i, *t; // temps
-
-  --argc; ++argv;
+  --argc; ++argv; // 处理了一个参数
   if (argc > 0 && **argv == '-' && (*argv)[1] == 's') { src = 1; --argc; ++argv; }
   if (argc > 0 && **argv == '-' && (*argv)[1] == 'd') { debug = 1; --argc; ++argv; }
   if (argc < 1) { printf("usage: c4 [-s] [-d] file ...\n"); return -1; }
+  if ((fd = open(*argv, 0)) < 0) { printf("could not open(%s)\n", *argv); return -1; }
 }
 ```
 
+这个简单的处理机制使得我们可以省略 -s 或者 -d 中的任意多个参数。
+但美中不足的是不能调整 -s 和 -d 的顺序。当然，我们也可以使其成立。
+
+```c
+bool
+    src   = 0,    // print source and assembly flag
+    debug = 1;    // print executed instructions
+int main(int argc, char **argv)
+{
+  --argc; ++argv; // 处理了一个参数
+  while (argc > 0) {
+    if (**argv == '-') {
+      break;
+    }
+    if ((*argv)[1] == 's') { src = 1; }
+    if ((*argv)[1] == 'd') { debug = 1; }
+    --argc; ++argv;
+  }
+  if (argc < 1) { printf("usage: c4 [-s] [-d] file ...\n"); return -1; }
+  if ((fd = open(*argv, 0)) < 0) { printf("could not open(%s)\n", *argv); return -1; }
+}
+```
