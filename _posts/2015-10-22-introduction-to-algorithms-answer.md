@@ -23,4 +23,16 @@ layout: post
     8  i = 1
     9  j = 1
     10 for k = p to r
-    11     
+    11     if i > n_1
+    12         A[k] = R[j]
+    13         j = j + 1
+    14     if j > n_2
+    15         A[k] = L[i]
+    16         i = i + 1
+    11     if L[i] <= R[j]
+    12         A[k] = L[i]
+    13         i = i + 1
+    14     else
+    15         A[k] = R[j]
+    16         j = j + 1
+
