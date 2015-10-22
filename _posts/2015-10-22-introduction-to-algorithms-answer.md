@@ -26,13 +26,13 @@ layout: post
     11     if i > n_1
     12         A[k] = R[j]
     13         j = j + 1
-    14     if j > n_2
+    14     elseif j > n_2
     15         A[k] = L[i]
     16         i = i + 1
-    11     if L[i] <= R[j]
-    12         A[k] = L[i]
-    13         i = i + 1
-    14     else
-    15         A[k] = R[j]
-    16         j = j + 1
+    17     elseif L[i] <= R[j]
+    18         A[k] = L[i]
+    19         i = i + 1
+    20     else
+    21         A[k] = R[j]
+    22         j = j + 1
 
