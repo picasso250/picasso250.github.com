@@ -1,84 +1,120 @@
 ---
-title: 重新发明 Y 组合子 Python 版
+title: 重新发明 Y 组合子 JavaScript(ES6) 版
 layout: post
 ---
 
 关于Y组合子的来龙去脉，我读过几篇介绍的文章，相比之下，还是[王垠大神的著作](http://www.slideshare.net/yinwang0/reinventing-the-ycombinator)
-最易懂。但他原来所有的语言是scheme，我写一个python版的，来帮助大家理解吧。
+最易懂。但他原来所有的语言是scheme，我写一个 JS 版的，来帮助大家理解吧。
 
 我们首先来看看如何实现递归。
 
-lambda演算的语法非常简洁，一言以蔽之： $x \| t t \| \lambda x.t$
+lambda演算的语法非常简洁，一言以蔽之： $x \ \|  \ t \ t \ \| \ \lambda x.t$
 
 其中第一个x表示变量，第二个 t t 表示调用， 第三个 $\lambda x.t$ 表示函数定义。
 
-首先我们来看一个阶乘函数，然后调用它。
+首先我们来定义一个阶乘函数，然后调用它。
 
-    def fact(n): return 1 if n == 1 else n * fact(n-1)
+    fact = n => n == 1 ? 1 : n * fact(n-1)
     fact(5)
 
-lambda演算中不可以这么简单的定义阶乘函数，是因为它没有 `def` 。
-
-将之用lambda表示
-
-    fact = lambda n: 1 if n == 1 else n * fact(n-1)
+lambda演算中不可以这么简单的定义阶乘函数，是因为它没有 `=` 赋值符号 。
 
 现在我们看到在lambda定义中，存在fact的名字，如果我们想要无名的调用它，是不行的。如下
 
-    (lambda n: 1 if n == 1 else n * fact(n-1))(5) # there is still `fact` name
+    (n => n == 1 ? 1 : n * fact(n-1))(5) # there is still `fact` name
 
-我们想要将名字消去，如何消去一个函数的名字呢？将之变为参数，因为参数是可以随意命名的。
+我们想要将名字消去，如何消去一个函数的名字呢？
 
-    fact = lambda f, n: 1 if n == 1 else n * f(f, n-1)
+首先，没有名字是无法定义一个递归函数的。
+
+那么，我们不禁要问了，哪里可以对事物命名呢？
+
+对了，将之变为参数，因为参数是可以随意命名的。
+
+    fact = (f, n) => n == 1 ? 1 : n * f(f, n-1)
     fact(fact, 5)
 
 嗯，很好，看起来不错。不过，要记住在 lambda 演算里面，函数只能有一个参数，所以我们稍微做一下变化。
 
-    fact = lambda f: lambda n: 1 if n == 1 else n * f(f)(n-1)
+    fact = f => n => n == 1 ? 1 : n * f(f)(n-1)
     fact(fact)(5)
 
 你可能会说我在做无用功，别过早下结论，我们只需要将 `fact` **代入**，就得到了完美的匿名函数调用。
 
-    (lambda f: lambda n: 1 if n == 1 else n * f(f)(n-1)) (lambda f: lambda n: 1 if n == 1 else n * f(f)(n-1)) (5)
+    (f => n => n == 1 ? 1 : n * f(f)(n-1)) (f => n => n == 1 ? 1 : n * f(f)(n-1)) (5)
 
 看，我们成功了，这一坨代码，是完全可以运行的哦。这个叫做 **穷人的Y组合子**。可以用，但是不通用，你要针对每个具体函数改造。
 
 于是我们继续改造。我们将把通用的模式提取出来，这个过程叫做 **抽象**。
 
-首先我们看到了 `fact(fact)(5)`，这里面要将fact重复写两次，根据DRY原则，我们可以这么做
+首先我们看到了 `f(f)` 两次， `fact(fact)` 一次，这种pattern重复了3次，根据 DRY 原则，我们可以这么做
 
-    (lambda f: f(f)) (fact) (5)
+    w = f => f(5)
+    w(fact) (5) # short version
+    w (f => n => n == 1 ? 1 : n * f(f)(n-1)) (5) # longer version
 
-然后，看看 fact 本身 我们看到了 `f(f)(n-1)`，这让我们很不高兴，我们本来是想这么做的：
+现在，我们就只有一个重复的模式了，那就是 `f(f)` 。但是因为它在函数内部（也就是在业务逻辑内部），我们要先把它解耦出来。也就是 factor out。
 
-    Y(lambda n: 1 if n == 1 else n * f(n-1)) # Y 可以将普通的函数转换成递归函数
+我们从 `f => n => n == 1 ? 1 : n * f(f)(n-1)` 开始
 
-我们发现 `f` 是个自由变量，这可不行。于是我们稍微改进一下：
+    f =>
+        n => n == 1 ? 1 : n * f(f)(n-1)
 
-    Y(lambda f: lambda n: 1 if n == 1 else n * f(n-1)) # Y 可以将参数转换成递归函数
+这可以变成
 
-你很震惊，你觉得这不可能。但是我们知道haskell大神已经做到了，所以我们继续思考。fact中的`f(f)`可以变成g，只要g的值是 `f(f)` 就行了。
+    f =>
+        (g => n => n == 1 ? 1 : n * g(n-1)) ( f(f) )
 
-    fact = lambda f: ( (lambda g: lambda n: 1 if n == 1 else n * g(n-1)) ( f(f) ) )
+当然， `f(f)` 在call by value 时会导致栈溢出，所以我们就 $\eta$ 化一下
 
-因为python不是懒求值，而是贪求值，为了避免stackoverflow，我们需要将 f(f) 做一个 $\eta$ 变换。
+    f =>
+        (g => n => n == 1 ? 1 : n * g(n-1)) ( v=>f(f)(v) )
 
-    f(f) == lambda v: f(f)(v)
+我们看到了 `g => n => n == 1 ? 1 : n * g(n-1)` 这个就是我们梦寐以求的阶乘函数的定义啊。
 
-现在
+我们将这个提取出来（再一次的factor out）。上面的可以改写成。
 
-    fact = lambda f: ( (lambda g: lambda n: 1 if n == 1 else n * g(n-1)) ( lambda v: f(f)(v) ) )
-    (lambda f: f(f)) (fact) (5)
+    fact => f =>
+        fact ( v=>f(f)(v) )
 
-我们可以看到，正中间的 `lambda g: lambda n: 1 if n == 1 else n * g(n-1)` 正好就是阶乘函数。
+不要忘记最初的w，那么如下：
 
-我们来最终写完它吧。
+    w(
+        (fact => f => fact ( v => f(f)(v) ))
+        (g => n => n == 1 ? 1 : n * g(n-1))
+    )(5)
 
-    (lambda f: f(f)) ( lambda f: ( (lambda g: lambda n: 1 if n == 1 else n * g(n-1)) ( lambda v: f(f)(v) ) ) ) (5)
+很自然我们会再一次把阶乘函数的定义factor out出来，当然，`fact => f => fact ( v=>f(f)(v) )` 中的fact我们也会换成其他的名字
 
-最后，让我们瞻仰一下Y组合子的风采
+    (h =>
+        w( (s => f => s ( v => f(f)(v) )) (h))
+    )
+    (g => n => n == 1 ? 1 : n * g(n-1)) (5)
 
-    Y = labmda f: (lambda u: u(u)) ( lambda g: f ( lambda v: g(g)(v) ) )
+好，大功告成，上面的那个括号里面的就是Y了。我们将之单独拿出来看。
+
+    (h =>
+        w(
+            (s => f => s ( v => f(f)(v) )) (h)
+        )
+    )
+
+最中间一行的 `h` 可以apply一下，也就是化简：
+
+    (h =>
+        w(
+            (f => h ( v => f(f)(v) ))
+        )
+    )
+
+当然, w这个名字也应该去除
+
+    (h =>
+        (f => h ( v => f(f)(v) ))
+        (f => h ( v => f(f)(v) ))
+    )
+
+这就是最后的结果了。
 
 名调用中，可以这么写：
 
