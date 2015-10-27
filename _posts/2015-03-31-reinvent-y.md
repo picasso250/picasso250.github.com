@@ -3,10 +3,8 @@ title: 重新发明 Y 组合子 Python 版
 layout: post
 ---
 
-王垠大神的著作
-http://www.slideshare.net/yinwang0/reinventing-the-ycombinator
-
-我写个python版的。
+关于Y组合子的来龙去脉，我读过几篇介绍的文章，相比之下，还是[王垠大神的著作](http://www.slideshare.net/yinwang0/reinventing-the-ycombinator)
+最易懂。但他原来所有的语言是scheme，我写一个python版的，来帮助大家理解吧。
 
 首先我们来看一个阶乘函数，然后调用它。
 
