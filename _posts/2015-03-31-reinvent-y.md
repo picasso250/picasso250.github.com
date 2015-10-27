@@ -6,12 +6,22 @@ layout: post
 关于Y组合子的来龙去脉，我读过几篇介绍的文章，相比之下，还是[王垠大神的著作](http://www.slideshare.net/yinwang0/reinventing-the-ycombinator)
 最易懂。但他原来所有的语言是scheme，我写一个python版的，来帮助大家理解吧。
 
+我们首先来看看如何实现递归。
+
+lambda演算的语法非常简洁，一言以蔽之：
+
+    x | t t | $\lambda x.t$
+
+其中第一个x表示变量，第二个 t t 表示调用， 第三个 $\lambda x.t$ 表示函数定义。
+
 首先我们来看一个阶乘函数，然后调用它。
 
     def fact(n): return 1 if n == 1 else n * fact(n-1)
     fact(5)
 
-然后将之用lambda表示
+lambda演算中不可以这么简单的定义阶乘函数，是因为它没有 `def` 。
+
+将之用lambda表示
 
     fact = lambda n: 1 if n == 1 else n * fact(n-1)
 
