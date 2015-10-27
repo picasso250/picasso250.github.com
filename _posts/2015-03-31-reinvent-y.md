@@ -8,7 +8,7 @@ layout: post
 
 我们首先来看看如何实现递归。
 
-lambda演算的语法非常简洁，一言以蔽之： $x | t t | \lambda x.t$
+lambda演算的语法非常简洁，一言以蔽之： $x \| t t \| \lambda x.t$
 
 其中第一个x表示变量，第二个 t t 表示调用， 第三个 $\lambda x.t$ 表示函数定义。
 
