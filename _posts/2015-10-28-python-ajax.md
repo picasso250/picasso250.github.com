@@ -61,7 +61,7 @@ http://lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js
         $.get('/uri')
     </script>
 
-中间一行就是脚本了，这一行的作用是向服务器发送一个访问为GET的ajax请求，路径为 `/uri`。关于这一函数的详细用法，请看
+中间一行就是脚本了，这一行的作用是向服务器发送一个方法为GET的ajax请求，路径为 `/uri`。关于这一函数的详细用法，请看
 http://api.jquery.com/jQuery.get/
 
 现在**按F12打开控制台**，应该可以看到红色的一行提示。点开这个网址，你可以看到具体的报错信息：404。这是很正常的，因为我们还没写这个脚本呢。
@@ -70,38 +70,40 @@ http://api.jquery.com/jQuery.get/
 
 现在在根目录下新建一个文件夹 `htbin` 然后在里面新建一个脚本，这个脚本的作用就是输出访问次数。因此，我们将之命名为 `count.py` 内容如下：
 
-```
-#!python3
+    #!python3
+    
+    import os
+    
+    print('Content-Type: text/html')
+    print()
+    
+    def write_count(n):
+        with open(filename, "w") as fh:
+            fh.write(n)
+    
+    c = 0
+    filename = 'count.txt'
+    if os.path.exists(filename):
+        with open(filename) as f:
+            c = int(f.read())
+    next = str(c+1)
+    write_count(next)
+    
+    print(next)
 
-import os
+将这个脚本改成可以执行的
 
-print('Content-Type: text/html')
-print()
-
-def write_count(n):
-    with open(filename, "w") as fh:
-        fh.write(n)
-
-c = 0
-filename = 'count.txt'
-if os.path.exists(filename):
-    with open(filename) as f:
-        c = int(f.read())
-next = str(c+1)
-write_count(next)
-
-print(next)
-```
+    chmod +x count.py
 
 现在访问 `/htbin/count.py` 你会发现数字1，如果你不断刷新，数字会不断增长。这种会不断改变内容的请求，我们称之为动态请求，淘宝的订单，百度的搜索结果，都是动态请求。
 
 现在目录文件的结构如下：
 
-    -
-    |-- index.html
-    |-- jquery-2.0.3.js
+    .
     |-- htbin
-        |-- count.py
+    |   `-- count.py
+    |-- index.html
+    `-- jquery-2.0.3.js
 
 ### 集成
 
