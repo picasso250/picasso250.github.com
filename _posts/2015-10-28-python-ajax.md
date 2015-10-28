@@ -62,7 +62,7 @@ http://lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js
     </script>
 
 中间一行就是脚本了，这一行的作用是向服务器发送一个访问为GET的ajax请求，路径为 `/uri`。关于这一函数的详细用法，请看
-f
+http://api.jquery.com/jQuery.get/
 
 现在**按F12打开控制台**，应该可以看到红色的一行提示。点开这个网址，你可以看到具体的报错信息：404。这是很正常的，因为我们还没写这个脚本呢。
 
