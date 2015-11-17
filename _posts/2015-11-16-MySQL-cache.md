@@ -32,7 +32,6 @@ count(r)=35000, count(u)=649577，全表扫描当然会很慢。但是天真的�
 
     class Cachable
     {
-    	
     	function __call($name, $args)
     	{
     		if (preg_match('/(\w+)Cachable$/', $name, $m)) {
