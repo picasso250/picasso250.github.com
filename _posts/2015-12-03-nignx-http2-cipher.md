@@ -1,5 +1,5 @@
 ---
-title: Nginx HTTP 2 的加密黑名单
+title: Nginx HTTP 2 的编译和配置
 layout: post
 ---
 
