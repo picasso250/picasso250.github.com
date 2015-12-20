@@ -1,5 +1,5 @@
 ---
-title: 《Learn You a Haskell for Great Good》（一）
+title: 《Learn You a Haskell for Great Good》笔记（一）
 layout: post
 ---
 
