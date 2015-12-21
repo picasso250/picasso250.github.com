@@ -1,5 +1,5 @@
 ---
-title: 《快学Scala》笔记（第一章）
+title: 《快学Scala》笔记（第一章 基础）
 layout: post
 ---
 
