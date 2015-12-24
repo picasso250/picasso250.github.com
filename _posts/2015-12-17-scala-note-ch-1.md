@@ -21,7 +21,7 @@ layout: post
 15. 引入 `import scala.math._` （`_` 是通配符，类似`*`）后，可以使用各种数学函数 sqrt pow min 等
 16. Scala没有静态方法，但有单例对象 singleton object 每个类都对应一个伴生对象 companion object，比如 BigInt 类的伴生类。 BigInt.probablePrime(100, scala.util.Random)
 17. `"hello"(4)` 等于Java的 `"hello"[4]` , `(` 是 括号方法的重载，一般对应 apply方法。BigInt("121212121212") 生成大整数，Array(1,4,9,33) 生成Int数组
-18. Scaladoc 在 www.scala-lang.org/api
+18. Scaladoc 在 [www.scala-lang.org/api](www.scala-lang.org/api)
 
 答案
 
