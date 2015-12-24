@@ -26,3 +26,13 @@ layout: post
 
 练习
 
+1.  val m = Map("shoe"->223.3, "shirt"->107.1,"coat"->320.0); val mAfter = for((name,price) <- m) yield (name,price*0.9)
+2. val words = new scala.collection.mutable.HashMap[String,Int]; val in = new java.util.Scanner(new java.io.File("myfile.txt")); while(in.hasNext()) {val w=in.next();words(w)=words.getOrElse(w,0)+1}; for((w,n)<-words) printf("%s\t%d\n",w,n)
+3. var words=Map[String,Int](); val in = new java.util.Scanner(new java.io.File("myfile.txt")); while(in.hasNext()) {val w=in.next();words = words + (w -> (words.getOrElse(w,0)+1)) }; for((w,n)<-words) printf("%s\t%d\n",w,n)
+4. var words=scala.collection.immutable.SortedMap[String,Int](); val in = new java.util.Scanner(new java.io.File("myfile.txt")); while(in.hasNext()) {val w=in.next();words = words + (w -> (words.getOrElse(w,0)+1)) }; for((w,n)<-words) printf("%s\t%d\n",w,n)
+5. import scala.collection.JavaConversions.mapAsScalaMap; var words=new java.util.TreeMap[String,Int]; val in = new java.util.Scanner(new java.io.File("myfile.txt")); while(in.hasNext()) {val w=in.next();words(w)=words.getOrElse(w,0)+1}; for((w,n)<-words) printf("%s\t%d\n",w,n)
+6. val m = new scala.collection.mutable.LinkedHashMap[String,Int](); m("Monday")=java.util.Calendar.MONDAY; m("Tuesday")=java.util.Calendar.TUESDAY;m("Wednesday")=java.util.Calendar.WEDNESDAY;m("Thursday")=java.util.Calendar.THURSDAY;m("Friday")=java.util.Calendar.FRIDAY;m("Saturday")=java.util.Calendar.SATURDAY;m("Sunday")=java.util.Calendar.SUNDAY;
+7. import scala.collection.JavaConversions.mapAsScalaMap; import scala.collection.JavaConversions.asScalaSet; val ps = java.lang.System.getProperties(); val len = (s:Object) => s.toString.length; val maxlen = len(ps.keySet.maxBy(len)); for ((o,v)<-ps) printf("%-"+(maxlen+1)+"s| %s\n", o, v)
+8. def minmax(values: Array[Int]) = (values.min, values.max)
+9. def lteqgt(values: Array[Int], v: Int) = (values.count(_<v), values.count(_==v), values.count(_>v))
+10. 字符串对比、恺撒密码？
