@@ -56,3 +56,9 @@ layout: post
 ### 发布受阻。
 
 假设 featureA 和 featureB 都已经开发完毕。合并至master后，打上tag `v1.2.2`，交给QA测试。但在测试的过程中，发现有 featureA 重大缺陷，不能发布，准备只发布 featureB，此时，可以将 `master` 分支 reset 回上一次发布的tag `v1.2.1`，然后将featureB单独合并至 `master` 发布。
+
+---
+
+现在才知道这不是我的首创，原来这个叫做
+
+[GitHub Flow](http://www.ruanyifeng.com/blog/2015/12/git-workflow.html)
