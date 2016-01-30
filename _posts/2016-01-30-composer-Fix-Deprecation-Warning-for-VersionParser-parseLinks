@@ -1,7 +1,0 @@
-Fix Deprecation Warning for VersionParser::parseLinks()
-
-I am learning `Yii 2.0`. It mentions to
-
-    
- 
- Call to undefined method Composer\Package\Loader\ArrayLoader::parseLinks() site:https://github.com/francoispluchino/composer-asset-plugin/issues
