@@ -53,7 +53,7 @@ layout: post
 
     Downloading https://getcomposer.org/version
 
-啊西吧，这还是需要先有梯子！这人到底有没有做工作！没事，我们假设你已经有了一个梯子，那么你只要在 PowerShell 中执行命令去设置变量就行了
+啊西吧，这还是需要先有梯子！这人到底有没有做工作！没事，我们假设你已经有了一个梯子，那么你只要[在 PowerShell 中执行命令去设置环境变量](http://picasso250.github.io/2014/12/31/windows-powershell-evn-var.html)就行了
 
     $Env:http_proxy="http://梯子.com:8080/"
 
