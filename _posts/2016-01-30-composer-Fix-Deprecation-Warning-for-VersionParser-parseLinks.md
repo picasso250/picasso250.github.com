@@ -1,4 +1,7 @@
-Fix Deprecation Warning for VersionParser::parseLinks()
+---
+title: Fix Deprecation Warning for VersionParser::parseLinks()
+layout: posts
+---
 
 I am learning `Yii 2.0`. It mentions to
 
