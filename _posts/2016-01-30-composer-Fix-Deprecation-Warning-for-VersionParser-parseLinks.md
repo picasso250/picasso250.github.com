@@ -22,8 +22,8 @@ You just need to
 Done.
 
 但是我们在中国，没办法只得使用一些特殊手段。
-Search `proxy` in https://getcomposer.org/doc/03-cli.md, and you'll find we need to set system var `http_proxy`.
+We [need to set system var `http_proxy`](https://getcomposer.org/doc/03-cli.md).
 
-[How to set sys var in PowerShell)[http://picasso250.github.io/2014/12/31/windows-powershell-evn-var.html]
+[How to set sys var in PowerShell](http://picasso250.github.io/2014/12/31/windows-powershell-evn-var.html)
 
 Done.
