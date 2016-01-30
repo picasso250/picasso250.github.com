@@ -53,5 +53,3 @@ layout: post
 这可不是小事。这是因为GitHub想要知道是谁在下载东西，[因此需要token](https://github.com/composer/composer/issues/3542)。此时你需要[新创建一个token](https://github.com/settings/tokens)给它。然后[配置token](https://github.com/composer/composer/blob/master/doc/articles/troubleshooting.md#api-rate-limit-and-oauth-tokens)
 
     composer config -g github-oauth.github.com <oauthtoken>
-
-最后吐槽一下Yii的文档，其不完善程度令人发指！
