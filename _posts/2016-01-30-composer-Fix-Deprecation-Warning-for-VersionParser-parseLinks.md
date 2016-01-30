@@ -11,7 +11,7 @@ But it throws an Error to my face:
  
     Call to undefined method Composer\Package\Loader\ArrayLoader::parseLinks()
 
-I googled, and it turned out that [many people come through this](https://github.com/composer/composer/issues/4260).
+I googled, and it turned out that [many people run into this](https://github.com/composer/composer/issues/4260).
 
 But it's not Composer's mistake. It is because [composer's version is old but `composer-asset-plugin`'s version is newer](https://github.com/francoispluchino/composer-asset-plugin/issues).
 
