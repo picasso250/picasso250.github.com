@@ -41,3 +41,17 @@ layout: post
     composer self-update -vvv
 
 天哪！
+
+我们继续
+
+    composer create-project --prefer-dist --stability=dev yiisoft/yii2-app-basic basic
+
+然后我们惊讶的发现：
+
+    Could not fetch https://api.github.com/repos/jquery/jquery-dist, please create a GitHub OAuth token to go over the API rate limit
+
+这可不是小事。这是因为GitHub想要知道是谁在下载东西，[因此需要token](https://github.com/composer/composer/issues/3542)。此时你需要[新创建一个token](https://github.com/settings/tokens)给它。然后[配置token](https://github.com/composer/composer/blob/master/doc/articles/troubleshooting.md#api-rate-limit-and-oauth-tokens)
+
+    composer config -g github-oauth.github.com <oauthtoken>
+
+最后吐槽一下Yii的文档，其不完善程度令人发指！
