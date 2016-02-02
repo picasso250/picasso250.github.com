@@ -177,10 +177,11 @@ layout: post
 
 > Backing services, such as the app’s database, queueing system, or cache, is one area where dev/prod parity is important. Many languages offer libraries which simplify access to the backing service, including adapters to different types of services. Some examples are in the table below.
 > 
->     Type    Language    Library Adapters
->     Database    Ruby/Rails  ActiveRecord    MySQL, PostgreSQL, SQLite
->     Queue   Python/Django   Celery  RabbitMQ, Beanstalkd, Redis
->     Cache   Ruby/Rails  ActiveSupport::Cache    Memory, filesystem, Memcached
+> | Type | Language | Library | Adapters |
+> |------|----------|---------|----------|
+> | Database |  Ruby/Rails | ActiveRecord  |  MySQL, PostgreSQL, SQLite
+> | Queue | Python/Django |  Celery  |    RabbitMQ, Beanstalkd, Redis
+> | Cache | Ruby/Rails | ActiveSupport::Cache  |  Memory, filesystem, Memcached
 >
 > Developers sometimes find great appeal in using a lightweight backing service in their local environments, while a more serious and robust backing service will be used in production. For example, using SQLite locally and PostgreSQL in production; or local process memory for caching in development and Memcached in production.
 > 
