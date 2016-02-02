@@ -1,5 +1,5 @@
 ---
-title: 12因 评注
+title: 12 因 评注
 layout: post
 ---
 
@@ -173,14 +173,15 @@ layout: post
 > Code authors vs code deployers  Different people    Same people
 > Dev vs production environments  Divergent   As similar as possible
 
-首先，部署时间，数个小时一次。其次，代码作者和部署者是一个人。我是非常赞成这两点的。有的大公司，非要运维人员部署，严重拖慢上线效率。
+首先，部署时间，数个小时一次。其次，代码作者和部署者是一个人。我是非常赞成这两点的。有的大公司，非要运维人员部署，严重拖慢上线效率。（更新：最近我部门得到了运维的权利，现在上线的效率果然好很多）
 
 > Backing services, such as the app’s database, queueing system, or cache, is one area where dev/prod parity is important. Many languages offer libraries which simplify access to the backing service, including adapters to different types of services. Some examples are in the table below.
 > 
-> Type    Language    Library Adapters
-> Database    Ruby/Rails  ActiveRecord    MySQL, PostgreSQL, SQLite
-> Queue   Python/Django   Celery  RabbitMQ, Beanstalkd, Redis
-> Cache   Ruby/Rails  ActiveSupport::Cache    Memory, filesystem, Memcached
+>     Type    Language    Library Adapters
+>     Database    Ruby/Rails  ActiveRecord    MySQL, PostgreSQL, SQLite
+>     Queue   Python/Django   Celery  RabbitMQ, Beanstalkd, Redis
+>     Cache   Ruby/Rails  ActiveSupport::Cache    Memory, filesystem, Memcached
+>
 > Developers sometimes find great appeal in using a lightweight backing service in their local environments, while a more serious and robust backing service will be used in production. For example, using SQLite locally and PostgreSQL in production; or local process memory for caching in development and Memcached in production.
 > 
 > The twelve-factor developer resists the urge to use different backing services between development and production, even when adapters theoretically abstract away any differences in backing services. Differences between backing services mean that tiny incompatibilities crop up, causing code that worked and passed tests in development or staging to fail in production. These types of errors create friction that disincentivizes continuous deployment. The cost of this friction and the subsequent dampening of continuous deployment is extremely high when considered in aggregate over the lifetime of an application.
