@@ -196,21 +196,21 @@ expr -> 9                | expr.t = '9'
 
 后3题略
 
-**练习 2.4.1** 为下列文法构造递归下降语法分析器：
+## **练习 2.4.1**
+为下列文法构造递归下降语法分析器：
+
+这个很好构造，只要照抄原来的代码就行了
 
 1) `S -> + S S | - S S | a`
 
-    void stmt() {
-        switch (lookhead) {
+    void S() {
+        switch ( lookahead ) {
         case '+':
-            lookahead = nextTerminal; stmt(); stmt();
-            break;
+            match('+'); S(); S(); break;
         case '-':
-            lookahead = nextTerminal; stmt(); stmt();
-            break;
+            match('-'); S(); S(); break;
         case 'a':
-            lookahead = nextTerminal;
-            break;
+            match('a'); break;
         default:
             report("syntax error");
         }
@@ -218,42 +218,49 @@ expr -> 9                | expr.t = '9'
 
 2) `S -> S ( S ) S |ϵ`
 
-这个文法是有歧义的，并且也会造成左递归，我们来改造一下：
+这个语法其实就是我们常见的括号配对。
 
-`S -> () | ( S ) S |ϵ`
+但这会造成“左递归”。我们首先进行改写
 
-    void stmt() {
-        if (lookahead == '(') {
-            match('(');
-            if (nextTerminal == ')') match(')');
-            else {
-                stmt();
-                match(')')
-                stmt();
-            }
-        }
+    S → ε R
+    R → ( S ) S R | ε
+
+然后就可以这样写：
+
+    void S() {
+        if (lookahead == '(') R();
     }
-    void match(char c) {
-        // in the end of language, `nextTerminal` will be -1(EOF),
-        // so do `lookahead`,
-        // eventually syntax error reported.
-        if (c == lookahead) lookahead = nextTerminal;
-        else report("syntax error");
+    void R() {
+        switch ( lookahead ) {
+        case '(':
+            match('('); S(); match(')'); S(); R();
+            break;
+        case EOF:
+            break;
+        default:
+            report("syntax error");
+        }
     }
 
 3) `S -> 0 S 1 | 0 1`
 
-    void stmt() {
-        match('0');
-        if (nextTerminal == '0') stmt();
-        match('1');
+S的两个分支都是0开头（FIRST集合相交），所以这个对递归下降语法分析器不适用
+
+这个规则可以这样修改
+
+    S → 0 R 1
+    R → S | ε
+
+其实这样修改过之后，依然存在FIRST集合相交的问题，但是，你懂的，我们的代码就可以了
+
+    void S() {
+        match('0'); R(); match('1');
     }
-    void match(char c) {
-        if (c == lookahead) lookahead = nextTerminal;
-        else report("syntax error");
+    void R() {
+        if (lookahead == '0') S();
     }
 
-**练习 2.6.1**
+## **练习 2.6.1**
 扩展2.6.5 节中的词法分析器以消除注释。注释的定义如下：
 
 1. 以 `//` 开始的注释，包括从它开始到这一行的结尾的所有字符
