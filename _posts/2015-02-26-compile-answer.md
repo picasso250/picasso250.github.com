@@ -267,123 +267,186 @@ S的两个分支都是0开头（FIRST集合相交），所以这个对递归下�
 2. 以 `/*` 开始的注释，包括从它到后面第一次出现的字符序列 `*/` 之间的所有字符
 
 ---
+难点有两个：
 
-    for ( ; ; lookahead = peek, peek = next input character) {
-        if ( peek is a blank or a tab ) do nothing;
-        else if ( peek is a new line ) line = line + 1;
-        else if (lookahead == '/') {
-            if (peek == '/') {
-                for ( ; ; lookahead = peek, peek = next input character) {
-                    if (peek is a new line) {
-                        line = line + 1;
-                        break;
-                    }
-                }
-            } else if (peek == '*') {
-                for ( ; ; lookahead = peek, peek = next input character) {
-                    if ( peek is a new line ) line = line + 1;
-                    else if ( lookahead == '*' && peek == '/') {
-                        peek = next input character;
-                        break;
-                    }
-                }
+第一点，不能放弃 / 号（除号）；
+
+第二点，懂的何时结束。
+首先，将peek的类型改为int（这一点是为了标识文件结束，与本题无关）。然后在处理空白处加入如下代码：
+
+    for ( ;; peek = read()) {
+        if (peek == ' ' || peek == '\t' || peek == '\r') continue;
+        else if (peek == '\n') line++;
+        else if (peek == '/') {
+            peek = in.read();
+            if (peek == -1) {
+                throw new Error("syntax error, div can't at file end");
+            }
+            if (peek == '*') {
+                multiComment();
+            } else if (peek == '/') {
+                singleComment();
+            } else {
+                System.out.print(new Token('/'));
+                return new Token('/');
             }
         }
         else break;
     }
 
-**练习 2.6.2**
+这个程序结构可以清楚的看出我们是如何处理 `/` 号的，重点在于预读一个字符。
+处理单行注释比较简单，就是遇到换行符就停下来：
 
-扩展 2.6.5 节中的词法分析器，使它能够识别关系运算符 <、<=、==、!=、>=、>。
-
-首先需要一个新的类
-
-    package lexer;
-
-    import java.util.Hashtable;
-
-    public class Operator extends Word {
-        private static Hashtable<String, Integer> words = new Hashtable<String, Integer>();
-        static {
-            words.put("<",  Tag.LT);
-            words.put("<=", Tag.LE);
-            words.put("==", Tag.EQ);
-            words.put("!=", Tag.NE);
-            words.put(">=", Tag.GE);
-            words.put(">",  Tag.GT);
-        }
-
-        public Operator(String lexeme) {
-            super(words.get(lexeme), lexeme);
-        }
-
-        @Override
-        public String toString() {
-            return "Operater [" + lexeme + "]";
+    private void singleComment() throws IOException {
+        for (; ; peek = read()) {
+            if (peek == '\n') {
+                line++; break;
+            }
         }
     }
 
-其次需要在 Lexer 类中添加方法
+而多行注释要复杂一些，首先遇到 `*`，然后再预读一个字符做决定
 
-    private boolean isOperatorChar(char peek) {
-        return peek == '<' || peek == '=' || peek == '!' || peek == '>';
+    private void multiComment() throws IOException, Error {
+        peek = in.read();
+        if (peek == -1) {
+            throw new Error("syntax error, comment not finished");
+        }
+        while(true) {
+            if (peek == '*') {
+                peek = in.read();
+                if (peek == -1) {
+                    throw new Error("syntax error, comment not finished");
+                }
+                if (peek == '/') break;
+                else continue;
+            }
+            if (peek == '\n') line++;
+            peek = in.read();
+            if (peek == -1) {
+                throw new Error("syntax error, comment not finished");
+            }
+        }
     }
 
-然后就可以添加代码
+## **练习 2.6.2**
 
-        if (isOperatorChar(peek)) {
-            StringBuffer b = new StringBuffer();
-            do {
-                b.append(peek);
-                peek = (char)System.in.read();
-            } while (isOperatorChar(peek));
-            
-            String s = b.toString();
-            return new Operator(s);
-        }
+> 扩展 2.6.5 节中的词法分析器，使它能够识别关系运算符 <、<=、==、!=、>=、>。
 
-**练习 2.6.2**
+这个难点也在双符号上，怎么在识别 <= 的同时识别<。
+
+同样也是用预读字符处理。
+
+首先扩展符号表
+
+    public class Tag {
+        public final static int
+            NUM = 256, ID = 257, TURE = 258, FALSE = 259,
+            LT = '<', LE = 261, EQ = 263, NE = 264, GE = 265, GT = '>';
+    }
+
+然后，写出<和 <= 的处理
+
+    if (peek == '<') {
+        peek = in.read();
+        if (peek == -1)
+            throw new Error("syntax error, '<' can't at file end");
+        if (peek == '=') {
+            peek = ' ';
+            return new Token(Tag.LE);
+        } else
+            return new Token(Tag.LT);
+    }
+
+注意，如果遇到双符号，一定要把peek变成空白符，因为你已经处理了双符号的第二个符号！
+
+其余的符号做类似处理即可。
+
+多说一句，这个将peek置为空白符的行为，看起来不显山不露水，可实际上真的是非常巧妙的简化代码的行为！
+
+## **练习 2.6.3**
 
 扩展 2.6.5 节中的词法分析器，使它能够识别浮点数，比如2.、3.14、.5 等。
 
-首先建立两个新类型 Int 和 Float
+首先建立两个新类型 Integer 和 Double
 
-    package lexer;
-
-    public class Int extends Num {
+    public class Integer extends Num {
         public final int value;
-
-        public Int(String lexeme, int value) {
-            super(Tag.INTEGER, lexeme);
-            this.value = value;
+        public Integer(int v) {
+            super(Tag.DOUBLE); value = v;
         }
-
         @Override
         public String toString() {
-            return "Int [value=" + value + "]";
+            return "<Integer " + value + ">";
+        }
+
+    }
+    public class Double extends Num {
+        public final double value;
+        public Double(double v) {
+            super(Tag.DOUBLE); value = v;
+        }
+        @Override
+        public String toString() {
+            return "<Double " + value + "> ";
+        }
+
+    }
+
+然后修改分析数字的方法。
+同理，将点重新处理即可。
+
+    if (Character.isDigit(peek)) {
+        int v = 0;
+        Integer n = null;
+        do {
+            v = v * 10 + Character.digit(peek, 10);
+            peek = in.read();
+        } while (peek != -1 && Character.isDigit((char)peek));
+        n = new Integer(v);
+        if (peek == -1) {
+            System.out.print(n);
+            return n;
+        }
+        if (peek == '.') {
+            double s = 0, dp = 0.1;
+            while (true) {
+                peek = in.read();
+                if (!Character.isDigit((char)peek)) {
+                    Double d = new Double(v+s);
+                    System.out.print(d);
+                    return d;
+                }
+                s += Character.digit(peek, 10) * dp;
+                dp *= 0.1;
+            }
+        } else {
+            System.out.print(n);
+            return n;
+        }
+    }
+    if (peek == '.') {
+        peek = in.read();
+        if (Character.isDigit(peek)) {
+            double s = 0, dp = 0.1;
+            do {
+                s += Character.digit(peek, 10) * dp;
+                dp *= 0.1;
+                peek = in.read();
+            } while (peek != -1 && Character.isDigit((char)peek));
+            Double d = new Double(s);
+            System.out.print(d);
+            return d;
+        } else {
+            Token t = new Token('.');
+            System.out.print(t);
+            return t;
         }
     }
 
-    package lexer;
+---
 
-    public class Float extends Num {
-        public final float value;
-
-        public Float(String lexeme, float value) {
-            super(Tag.FLOAT, lexeme);
-            this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return "Float [value=" + value + "]";
-        }
-        
-    }
-
-然后建立分析数字的方法
-
-    package lexer;
+或者，也可以使用另一种思维方式
 
     public class Num extends Word {
 
