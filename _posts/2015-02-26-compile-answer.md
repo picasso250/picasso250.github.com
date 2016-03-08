@@ -494,3 +494,47 @@ S的两个分支都是0开头（FIRST集合相交），所以这个对递归下�
     private boolean isNumChar(char peek) {
         return Character.isDigit(peek) || peek == '.';
     }
+
+## 练习 2.8.1
+
+> C语言和Java 语言中的 for 语句具有如下形式：
+>
+>    for( $expr_1; expr_2; expr_3$ ) stmt
+>
+> 为 for 语句定义一个类 For
+
+for 语句相当于 while 语句，所以，可以参考 while 语句的写法
+
+    public class For extends Stmt {
+        Expr E1; Expr E2; Expr E3; Stmt S;
+        public For(Expr e1, Expr e2, Expr e3, Stmt s) {
+            super();
+            E1 = e1;
+            E2 = e2;
+            E3 = e3;
+            S = s;
+        }
+        @Override
+        public void gen() {
+            E1.rvalue();
+            String start = newlabel();
+            String end = newlabel();
+            emit(start+":");
+            Expr cond = E2.rvalue();
+            emit("ifFalse "+cond+" goto "+end);
+            S.gen();
+            E3.rvalue();
+            emit("goto "+start);
+            emit(end+":");
+        }
+        
+    }
+
+##练习 2.8.2
+
+> 程序设计语言C中没有布尔类型。试说明C语音的编译器可能使用什么方法将一个if语句翻译成为三地址代码。
+
+在 c 语言中，不等于 0 就是真，等于 0 就是假，所以：
+
+    ifFasle => ifEqual0
+    ifTrue  => ifNotEqual0
