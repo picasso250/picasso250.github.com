@@ -503,7 +503,11 @@ S的两个分支都是0开头（FIRST集合相交），所以这个对递归下�
 >
 > 为 for 语句定义一个类 For
 
-for 语句相当于 while 语句，所以，可以参考 while 语句的写法
+for 语句相当于 while 语句
+
+$expr_1$; while ( $expr_2$ ) { stmt $expr_3$; }
+
+所以，可以参考 while 语句的写法
 
     public class For extends Stmt {
         Expr E1; Expr E2; Expr E3; Stmt S;
@@ -527,12 +531,11 @@ for 语句相当于 while 语句，所以，可以参考 while 语句的写法
             emit("goto "+start);
             emit(end+":");
         }
-        
     }
 
 ##练习 2.8.2
 
-> 程序设计语言C中没有布尔类型。试说明C语音的编译器可能使用什么方法将一个if语句翻译成为三地址代码。
+> 程序设计语言 C 中没有布尔类型。试说明 C 语言的编译器可能使用什么方法将一个 if 语句翻译成为三地址代码。
 
 在 c 语言中，不等于 0 就是真，等于 0 就是假，所以：
 
