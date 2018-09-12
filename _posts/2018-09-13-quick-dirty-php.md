@@ -10,5 +10,6 @@ json decode on the fly
 debug online
 
     function d($str,$data=null){
-        error_log(sprintf("/tmp/php_debug_%s.log",date('Ymd')),3,sprintf("[%s] %s %s\n",date('c'),$str,json_encode($data,JSON_UNESCAPED_UNICODE));
+        $file = "/tmp/php_debug_".date('Ymd').".log";
+        error_log(sprintf("[%s] %s %s\n",date('c'),$str,json_encode($data,JSON_UNESCAPED_UNICODE)), 3, $file);
     }
