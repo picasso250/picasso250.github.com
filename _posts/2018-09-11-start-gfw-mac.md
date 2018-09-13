@@ -19,4 +19,4 @@ layout: post
     
 并启动
 
-    sslocal -s 172.96.192.15 -p 8989 -k "x4stcfuheSS1A\!Jazzf"
+    sslocal -s 184.170.222.60 -p 8421 -k whatever
