@@ -1,6 +1,7 @@
 ---
 title: Python 和 Ajax
 layout: post
+comments: true
 ---
 
 朋友问了我一个问题：如何用Python实现页面部分刷新。
