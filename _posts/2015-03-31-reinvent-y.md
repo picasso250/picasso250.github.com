@@ -1,6 +1,7 @@
 ---
 title: 重新发明 Y 组合子 JavaScript(ES6) 版
 layout: post
+comments: true
 ---
 
 关于Y组合子的来龙去脉，我读过几篇介绍的文章，相比之下，还是[王垠大神的著作](http://www.slideshare.net/yinwang0/reinventing-the-ycombinator)
