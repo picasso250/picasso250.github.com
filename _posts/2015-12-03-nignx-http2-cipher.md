@@ -1,6 +1,7 @@
 ---
 title: Nginx HTTP 2 的编译和配置
 layout: post
+comments: true
 ---
 
 准备开HTTP2
