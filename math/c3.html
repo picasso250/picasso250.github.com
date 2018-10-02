@@ -1,0 +1,86 @@
+<script src="processing.min.js"></script>
+<script type="text/processing" data-processing-target="mycanvasR3">
+void setup()
+{
+  size(400,400);
+  
+  PFont fontA = loadFont("courier");
+  textFont(fontA, 14);  
+}
+
+void draw(){  
+  background(125);
+  fill(255);
+
+  text("R³ (move mouse left or right to value λ)",20,20);
+
+  int a = 100, b = 200, c = 300;
+  int left = 0, right = 400;
+  int center = 400/2;
+  int lambda = mouseX - center;
+
+  text("λ = "+lambda,20,50);
+
+  line(left, a, right, a);
+  line(center, a, center, a-5);
+  drawPoint(center+lambda*0.6, a);
+
+  line(left, b, right, b);
+  line(center, b, center, b-5);
+  drawPoint(center+lambda*0.99, b);
+
+  line(left, c, right, c);
+  line(center, c, center, c-5);
+  drawPoint(center+lambda* -0.4, c);
+
+}
+
+void drawPoint(int x, int y) {
+    int r = 4;
+    ellipse(x, y, r*2, r*2);
+}
+</script>
+<canvas id="mycanvasR3"></canvas>
+
+<script type="text/processing" data-processing-target="mycanvasC3">
+void setup()
+{
+  size(400,400);
+  
+  PFont fontA = loadFont("courier");
+  textFont(fontA, 14);  
+}
+
+void draw(){  
+  background(125);
+  fill(255);
+
+  int left = 0, right = 400;
+  int center = 400/2;
+  int lambda_r = mouseX - center;
+  int lambda_i = -(mouseY - center);
+
+  int a=2,b=-3,
+      c=5,d=4,
+      e=-6,f=7;
+
+  text("λ = "+lambda_r+" + "+lambda_i+"i",20,50);
+
+  line(left, center, right, center);
+  line(center, 0, center, 400);
+
+  drawPoint(a*lambda_r- b*lambda_i, a*lambda_i+b*lambda_r);
+  drawPoint(c*lambda_r- d*lambda_i, c*lambda_i+d*lambda_r);
+  drawPoint(e*lambda_r- f*lambda_i, e*lambda_i+f*lambda_r);
+
+  text("C³ (move mouse on canvas to value λ)",20,20);
+
+}
+void drawPoint(int x, int y) {
+    int center = 200;
+    int r = 4;
+    float ratio=7.0;
+    ellipse(center+x/ratio, center-y/ratio, r*2, r*2);
+}
+</script>
+<canvas id="mycanvasC3"></canvas>
