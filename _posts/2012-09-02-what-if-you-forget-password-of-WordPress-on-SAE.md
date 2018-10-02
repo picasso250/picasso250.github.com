@@ -1,6 +1,7 @@
 ---
 title: 忘记了 SAE 上的 WordPress 密码怎么办？
 layout: post
+comments: true
 ---
 
 如果你忘记了 WordPress 密码，有很多种方式可以找回密码。可是如果你是忘记了托管在 SAE 上的WordPress 密码，可就比较麻烦了。
