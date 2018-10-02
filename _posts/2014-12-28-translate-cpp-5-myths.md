@@ -1,6 +1,7 @@
 ---
 title: 译.C++的5个迷思
 layout: post
+comments: true
 ---
 
 C++的亲爸爸写了一系列博客:
