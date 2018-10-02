@@ -1,6 +1,7 @@
 ---
 title: Java 反编译和混淆
 layout: post
+comments: true
 ---
 
 Java 的字节码里记录了变量名，类名，函数名等等，所以，反编译 Java 是很容易的。悲愤的人们发明了 _混淆 Java 代码_ 的方法。
