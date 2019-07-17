@@ -5,9 +5,15 @@ layout: post
 
 如果你是一个普通的PHP程序员，那么你想必听过[Composer](https://getcomposer.org/)。但如果你试图使用这个工具，经过42次尝试之后，你意识到，你需要帮助。
 
-[Symfony.cn](http://symfony.cn/)那帮人做了一个[镜像网站](http://packagist.cn/)。作为一个Windows用户，你欣喜的点击`Composer-Setup.exe`，开始下载安装文件。但实际上这个安装文件根本就无法完成安装！
+本来，下一个section里我写的是如何下载composer，可是这么多年之后，官方终于可以比较轻松下载并安装composer了：
+[https://getcomposer.org/download/](https://getcomposer.org/download/)
 
-没事，我们还可以 **下载[composer.phar](http://packagist.cn/composer/composer.phar)**，很好，你将它放在某个目录里。比如 `d:\software\composer`，然后你发现它只能这么执行
+也有了一个比较靠谱的中文镜像：
+[https://www.phpcomposer.com/](https://www.phpcomposer.com/)
+
+---
+
+我们可以 **下载[composer.phar](http://packagist.cn/composer/composer.phar)**，很好，你将它放在某个目录里。比如 `d:\software\composer`，然后你发现它只能这么执行
 
     php d:\software\composer\composer.phar
 
@@ -18,6 +24,8 @@ layout: post
 [`%0`是当前文件名，`%*` 是所有参数](http://stackoverflow.com/questions/14286457/using-parameters-in-batch-files-at-dos-command-line)，[`%~dp0`是当前目录名](http://stackoverflow.com/questions/3827567/how-to-get-the-path-of-the-batch-script-in-windows)。不得不说bat的语法比bash的复杂多了。
 
 然后你在Path中加入这个目录，就可以了。
+
+---
 
 试试执行
 
@@ -50,7 +58,8 @@ layout: post
 
     Could not fetch https://api.github.com/repos/jquery/jquery-dist, please create a GitHub OAuth token to go over the API rate limit
 
-这可不是小事。这是因为GitHub想要知道是谁在下载东西，[因此需要token](https://github.com/composer/composer/issues/3542)。此时你需要[新创建一个token](https://github.com/settings/tokens)给它。然后[配置token](https://github.com/composer/composer/blob/master/doc/articles/troubleshooting.md#api-rate-limit-and-oauth-tokens)
+这可不是小事。这是因为GitHub想要知道是谁在下载东西，[因此需要token](https://github.com/composer/composer/issues/3542)，composer官方对此[有些解释](https://getcomposer.org/doc/06-config.md#gitlab-token)。
+此时你需要[新创建一个token](https://github.com/settings/tokens)给它。然后[配置token](https://github.com/composer/composer/blob/master/doc/articles/troubleshooting.md#api-rate-limit-and-oauth-tokens)
 
     composer config -g github-oauth.github.com <oauthtoken>
 
