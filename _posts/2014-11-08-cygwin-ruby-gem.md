@@ -1,59 +1,48 @@
 ---
-title: Ruby Gem install Jekyll on Windows
+title: Ruby Gem install Jekyll on Windows using Docker
 layout: post
 ---
 
-在 Cygwin 中安装 Ruby 和 Gem 是非常容易的，可以直接安装。
-但在安装 Jekyll 的过程中遇到了问题。
+警告：不要在Windows下直接安装Ruby！
 
-    gem install jekyll
+警告：不要在Windows下直接安装Ruby！
 
-时报错。
+警告：不要在Windows下直接安装Ruby！
 
-你可以使用一个 [PortableJekyll](https://github.com/madhur/PortableJekyll)，但问题在于这个东西特别大——超过600M.
+首先安装docker
 
-这个东西需要 Python2, 只要将python.exe 原地复制成 python2.exe 就可以了.
+然后安装这个image：
+docker hub image name `jekyll/jekyll`
+[https://hub.docker.com/r/jekyll/jekyll](https://hub.docker.com/r/jekyll/jekyll)
 
----
+然后启动之：
+```
+docker run -it -v /D/picasso250/picasso250.github.com:/data -p 127.0.0.1:4000:4000  jekyll/jekyll bash
+```
 
-以下是 cygwin 的安装过程. 问题在于 cygwin 不可以 serve , 不知为何.
+接下来你可以看到你可能遇到的[问题](https://help.github.com/en/articles/setting-up-your-github-pages-site-locally-with-jekyll)
 
-于是我们加入 debug 参数再运行一下。
+把以下内容写入Gemfile
 
-    gem install jekyll --debug
+```
+source 'https://rubygems.org'
+gem 'github-pages', group: :jekyll_plugins
+```
 
-看到报错：
+```
+bundle install
+```
 
-    Exception `ArgumentError' at /usr/share/ruby/2.0.0/win32/registry.rb:173 - invalid byte sequence in UTF-8
+然后保存
 
-估计是 Windows 平台的编码问题，将 173 行
+```
+docker commit e0f43f3089b picasso250 #改成你自己的container id和名字
+```
 
-    msg = msg[0, len].force_encoding(Encoding.find(Encoding.locale_charmap))
+以后直接运行那个container，在里面serve就可以了
 
-改成
+```
+jekyll s -I -H 0.0.0.0 # if you in docker
+```
 
-    msg = msg[0, len].force_encoding(Encoding::GBK)
-
-将自动探测的编码（UTF-8）强制设置成 GBK。
-
-如果在安装过程中发现报错，找不到make，就把make安装上就可以了。
-
-安装好 jekyll 后，直接运行 jekyll 提示找不到文件，运行
-
-     ~/.gem/ruby/gems/jekyll-2.5.1/bin/jekyll
-
-就可以了。
-
-如果你使用了代码高亮，可能会有报错：
-
-    Liquid Exception: No such file or directory - C:\Windows\system32\cmd.exe in _                                                                                      posts/2012-09-15-if-in-Java-opcode.md/#excerpt
-
-我安装了 python 和 Pygments 之后，依然出现这个报错，据说是兼容性问题。又听说 [jekyll现在支持一个ruby native 的语法高亮](http://yizeng.me/2013/05/10/setup-jekyll-on-windows/)，于是我就在 _config.yml 中添加了
-
-    highlighter: rouge
-
-然后
-
-    gem install rouge
-
-于是就好了。
+思考问题：如何watch？
