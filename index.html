@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Site Reset</title>
+  <meta name="google-site-verification" content="P9g6h5f9ZGKIg10jrT_sTok989t1mzhT8aJvyi9ywAM">
+  <meta name="robots" content="noindex, noarchive, nosnippet, max-image-preview:none">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f2ea;
+      --fg: #1b1b18;
+      --muted: #6a665f;
+      --line: #d9d0c2;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at top left, #fff8ef 0, transparent 35%),
+        radial-gradient(circle at bottom right, #efe4d3 0, transparent 30%),
+        var(--bg);
+      color: var(--fg);
+      font: 16px/1.6 Georgia, "Times New Roman", serif;
+    }
+
+    main {
+      width: min(720px, 100%);
+      padding: 32px;
+      border: 1px solid var(--line);
+      background: rgba(255, 252, 247, 0.88);
+      backdrop-filter: blur(6px);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 32px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Site Reset</h1>
+    <p>This site has been reset and no longer serves its previous content.</p>
+    <p class="muted">Current pages are intentionally minimal while search indexes are refreshed.</p>
+  </main>
+</body>
+</html>
